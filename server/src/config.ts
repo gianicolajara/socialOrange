@@ -3,7 +3,7 @@ import MongoStore from "connect-mongo";
 import { v4 as uuidv4 } from "uuid";
 
 export const PORT = process.env.PORT || 5001;
-export const URL_MONGO = "mongodb://localhost:27017/socialOrange";
+export const URL_MONGO = "mongodb://0.0.0.0:27017/socialOrange";
 export const JWT_SECRET = process.env.JWT_SECRET || "";
 
 export const SESSION_CONFIG: SessionOptions = {
@@ -27,7 +27,7 @@ export const SESSION_CONFIG: SessionOptions = {
     crypto: {
       secret: "squirrel",
     },
-    mongoUrl: "mongodb://localhost:27017/socialOrange",
+    mongoUrl: "mongodb://0.0.0.0:27017/socialOrange",
     autoRemove: "interval",
     autoRemoveInterval: 10,
   }),
