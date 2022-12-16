@@ -28,3 +28,8 @@ export interface ResponseAxiosGetAllPosts {
   message: string;
   posts: Array<PostInterface>;
 }
+
+export interface ResponseAxiosDeletePost {
+ message: string; 
+ id: string;
+}

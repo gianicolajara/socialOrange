@@ -1,6 +1,8 @@
 export interface IconButtonProps {
   children?: React.ReactNode;
-  className?: string | undefined;
+  onClick?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 export interface ButtonProps {

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { loadingState } from "../../../types/enums/generalEnums";
 import { ErrorInterface } from "../../../types/types/generalTypes";
-import { createPostThunk, getAllPostThunk } from "../../thunks/post.thunk";
+import { createPostThunk, deletePostByIdThunk, getAllPostThunk } from "../../thunks/post.thunk";
 import { InitialPostState } from "./type";
 
 const initialState: InitialPostState = {
@@ -17,30 +18,43 @@ const postSlice = createSlice({
     builder
       .addCase(createPostThunk.fulfilled, (state, action) => {
         state.error = initialState.error;
-        state.loading = "succeeded";
+        state.loading = loadingState.SUCCEEDED;
         state.posts = [...state.posts, action.payload.post];
       })
       .addCase(createPostThunk.pending, (state, action) => {
         state.error = initialState.error;
-        state.loading = "pending";
+        state.loading = loadingState.PENDING;
       })
       .addCase(createPostThunk.rejected, (state, action) => {
-        state.loading = "failed";
+        state.loading = loadingState.FAILED;
         state.error = action.payload as ErrorInterface;
       })
       .addCase(getAllPostThunk.fulfilled, (state, action) => {
         state.error = initialState.error;
-        state.loading = "succeeded";
-        state.posts = action.payload.posts;
+        state.loading = loadingState.SUCCEEDED;
+        state.posts = action.payload.posts.sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
       })
       .addCase(getAllPostThunk.pending, (state, action) => {
         state.error = initialState.error;
-        state.loading = "pending";
+        state.loading = loadingState.PENDING;
       })
       .addCase(getAllPostThunk.rejected, (state, action) => {
-        state.loading = "failed";
+        state.loading = loadingState.FAILED;
         state.error = action.payload as ErrorInterface;
-      });
+      })
+      .addCase(deletePostByIdThunk.fulfilled, (state, action) => {
+        state.loading = loadingState.SUCCEEDED;
+        state.error = initialState.error;
+        state.posts = state.posts.filter((item) => item.id !== action.payload.id)
+      }).addCase(deletePostByIdThunk.pending, (state, action) => {
+        state.error = initialState.error;
+        state.loading = loadingState.PENDING
+      }).addCase(deletePostByIdThunk.rejected, (state, action) => {
+        state.loading = loadingState.FAILED;
+        state.error = action.payload as ErrorInterface;
+      })
   },
 });
 

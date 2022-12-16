@@ -14,6 +14,9 @@ const Posts = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (!posts || posts.length === 0)
+    return <p className="text-center">No hay posts para mostrar</p>;
+
   return (
     <section className="flex flex-col w-full h-full gap-5 items-center">
       {posts &&

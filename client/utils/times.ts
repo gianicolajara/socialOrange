@@ -5,14 +5,12 @@ const UNIT_TIMES = {
   second: 1,
 };
 
-const timestampProp = Date.now() - 7200000; // 2 horas
-
 //se obtienen los segundos
 const getTimeInSecondDiff = (timestamp: number) => {
-  console.log((Date.now() - timestamp) / 1000);
   return (Date.now() - timestamp) / 1000;
 };
 
+//obtenemos la unidad de tiempo mas los segundos
 const getUnitAndTime = (timestamps: number) => {
   for (const [unit, time] of Object.entries(UNIT_TIMES)) {
     if (timestamps >= time) {
@@ -22,12 +20,13 @@ const getUnitAndTime = (timestamps: number) => {
   }
 };
 
-const getEstimatedTime = () => {
-  const rtf = new Intl.RelativeTimeFormat("en-US");
-  const unitAndTime = getUnitAndTime(getTimeInSecondDiff(timestampProp));
+export const getEstimatedTime = ({language = "es-VE", timestamp = ""}) => {
 
-  console.log(unitAndTime);
+  if(timestamp === "" || timestamp === null) return "Tiempo invalido"
 
+  const rtf = new Intl.RelativeTimeFormat(language);
+  const timePost = new Date(timestamp).getTime()
+  const unitAndTime = getUnitAndTime(getTimeInSecondDiff(timePost));
   return rtf.format(
     unitAndTime?.value || 0,
     (unitAndTime?.unit as Intl.RelativeTimeFormatUnit) || "second"

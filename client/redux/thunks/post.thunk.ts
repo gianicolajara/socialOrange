@@ -2,11 +2,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError, AxiosResponse } from "axios";
 import {
   createPostService,
+  deletePostByIdService,
   getAllPostService,
 } from "../../services/post/post.services";
 import {
   PostFormInterface,
   ResponseAxiosCreatePost,
+  ResponseAxiosDeletePost,
   ResponseAxiosGetAllPosts,
 } from "../../types/interfaces/post";
 
@@ -35,3 +37,9 @@ export const getAllPostThunk = createAsyncThunk(
       });
   }
 );
+
+export const deletePostByIdThunk = createAsyncThunk("delete/post", async (id: string, thunkApi) => {
+  return deletePostByIdService(id).then((res) => res.data as ResponseAxiosDeletePost).catch((err) => {
+    return thunkApi.rejectWithValue((err as AxiosError).response?.data)
+  })
+})

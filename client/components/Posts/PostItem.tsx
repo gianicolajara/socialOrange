@@ -1,8 +1,14 @@
 import Image from "next/image";
+import { useContext } from "react";
 import { AiFillLike } from "react-icons/ai";
-import { SlOptions } from "react-icons/sl";
+import { ModalContext } from "../../contexts/modalContext";
+import { useAppDispatch } from "../../redux/store";
+import { deletePostByIdThunk } from "../../redux/thunks/post.thunk";
 import { PostInterface } from "../../types/interfaces/post";
+import { getEstimatedTime } from "../../utils/times";
 import IconButton from "../Button/IconButton";
+import OptionsButton from "../OptionsButton";
+import { OptionsButtonItemProps } from "../OptionsButton/types";
 
 const PostItem = ({
   id,
@@ -13,10 +19,30 @@ const PostItem = ({
   createdAt,
   updatedAt,
 }: PostInterface) => {
+  const dispatch = useAppDispatch();
+  const { handleOpen } = useContext(ModalContext);
+
+  const createOptionsItem = (): Array<OptionsButtonItemProps> => [
+    {
+      id: 1,
+      label: "Borrar",
+      onClick: () => {
+        dispatch(deletePostByIdThunk(id as string));
+      },
+    },
+    {
+      id: 2,
+      label: "Editar",
+      onClick: () => {
+        handleOpen();
+      },
+    },
+  ];
+
   return (
     <article
       aria-label="post"
-      className="max-w-[500px] w-full max-h-[600px] h-max bg-neutral-50 rounded-md overflow-hidden shadow cursor-pointer hover:"
+      className="max-w-[500px] w-full max-h-[600px] h-max bg-neutral-50 rounded-md shadow cursor-pointer hover:"
     >
       <div
         aria-label="header-post"
@@ -38,7 +64,9 @@ const PostItem = ({
 
           <div className="h-max">
             <p className="text-sm">{creator.username}</p>
-            <small className="text-xs">{createdAt}</small>
+            <small className="text-xs">
+              {getEstimatedTime({ timestamp: createdAt })}
+            </small>
           </div>
         </div>
         <div className="flex gap-2">
@@ -48,9 +76,7 @@ const PostItem = ({
               <AiFillLike />
             </IconButton>
           </div>
-          <IconButton>
-            <SlOptions />
-          </IconButton>
+          <OptionsButton options={createOptionsItem()} />
         </div>
       </div>
       {photo && (

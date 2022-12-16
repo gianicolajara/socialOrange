@@ -17,7 +17,7 @@ const Input = ({
         name={name}
         onChange={onChange}
         value={value}
-        className={`p-4 w-full h-[50px] bg-neutral-100 rounded-lg focus:ring-1 focus:ring-orange-400 focus:bg-white outline-none transition-all font-light ${className}`}
+        className={`p-4 w-full h-[50px] bg-neutral-100 rounded-lg focus:ring-1 focus:ring-orange-400 focus:bg-white outline-none transition-all font-normal ${className}`}
       />
       {error && <small className="text-red-400"> {error} </small>}
     </>

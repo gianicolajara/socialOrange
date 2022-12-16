@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { serverPostUrl } from "../../config/urlBackend";
 import { PostFormType } from "../../types/interfaces/post";
-import { getFetch, postFetch } from "../../utils/fetching";
+import { deleteFetch, getFetch, postFetch } from "../../utils/fetching";
 
 export const createPostService = ({
   post = null,
@@ -21,3 +21,10 @@ export const getAllPostService = (): Promise<AxiosResponse> => {
     withCredentials: true,
   });
 };
+
+export const deletePostByIdService = (id = "") => {
+  return deleteFetch({
+    pathUrl: `${serverPostUrl}/${id}`,
+    withCredentials: true
+  })
+}

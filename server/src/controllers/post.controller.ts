@@ -51,7 +51,7 @@ export const deletePost = (req: Request, res: Response, next: NextFunction) => {
   Post.findByIdAndDelete(id, (err: any) => {
     if (err) return next(err);
 
-    return res.status(200).json({ message: "post deleted successfully" });
+    return res.status(200).json({ message: "post deleted successfully", id});
   });
 };
 

@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RoutesGuard from "../components/RoutesGuard";
 import UserRegeneration from "../components/UserRegeneration";
+import ModalProvider from "../contexts/modalContext";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -18,16 +19,18 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <Provider store={store}>
-      <ToastContainer className="z-[999999999]" />
-      {getLayout(
-        <main className={`${poppins.className} w-full h-full`}>
-          <UserRegeneration>
-            <RoutesGuard>
-              <Component {...pageProps} />
-            </RoutesGuard>
-          </UserRegeneration>
-        </main>
-      )}
+      <ModalProvider>
+        <ToastContainer className="z-[999999999]" />
+        {getLayout(
+          <main className={`${poppins.className} w-full h-full`}>
+            <UserRegeneration>
+              <RoutesGuard>
+                <Component {...pageProps} />
+              </RoutesGuard>
+            </UserRegeneration>
+          </main>
+        )}
+      </ModalProvider>
     </Provider>
   );
 }
