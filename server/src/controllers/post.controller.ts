@@ -51,12 +51,30 @@ export const deletePost = (req: Request, res: Response, next: NextFunction) => {
   Post.findByIdAndDelete(id, (err: any) => {
     if (err) return next(err);
 
-    return res.status(200).json({ message: "post deleted successfully", id});
+    return res.status(200).json({ message: "post deleted successfully", id });
   });
 };
 
 export const updatePost = (req: Request, res: Response, next: NextFunction) => {
-  //... todo
+  const { id } = req.params;
+  const { post, photo } = req.body;
+
+  Post.findByIdAndUpdate(
+    id,
+    {
+      post,
+      photo,
+    },
+    { new: true },
+    (err, updatedPost) => {
+      if (err) return next(err);
+
+      return res.status(200).json({
+        message: "post updated successfully",
+        post: updatedPost,
+      });
+    }
+  );
 };
 
 export const createPost = (req: Request, res: Response, next: NextFunction) => {

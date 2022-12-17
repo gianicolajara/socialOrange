@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { loadingState } from "../../types/enums/generalEnums";
+import { loadingStateUser } from "../../types/enums/generalEnums";
 
 interface ProviderRoutesGuardProps {
   children: React.ReactNode;
@@ -18,7 +18,11 @@ const RoutesGuard = ({ children }: ProviderRoutesGuardProps) => {
   const authCheck = () => {
     //evitar re-renderizados antes de obtener los datos del usuario
     //solamente seguira si no se consigue un usuario o si se consigue
-    if (loading === loadingState.FAILED || loading === loadingState.SUCCEEDED) {
+    if (
+      loading === loadingStateUser.FAILED ||
+      loading === loadingStateUser.SUCCEEDED ||
+      loadingStateUser.SUCCEEDEDLOGOUT
+    ) {
       if (!user && router.pathname !== "/login") {
         router.push("/login");
       } else if (user && router.pathname === "/login") {

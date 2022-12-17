@@ -14,7 +14,7 @@ const Button = ({
       onClick={onClick}
       aria-label="button"
       disabled={loading}
-      className={`px-4 py-2 bg-orange-500 text-white rounded-full w-max hover:bg-orange-400 active:bg-orange-700 transition-all self-center ${className}`}
+      className={`px-4 py-2 bg-neutral-300 text-black rounded-full w-max hover:bg-neutral-400 active:bg-neutral-500 transition-all self-center  ${className}`}
     >
       {loading ? <Loader /> : children}
     </button>

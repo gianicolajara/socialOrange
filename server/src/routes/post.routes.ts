@@ -5,12 +5,14 @@ import {
   deletePostValidator,
   getAllPostsValidtor,
   getOnePostValidator,
+  updatePostValidator,
 } from "../validators/post.validator";
 import {
   createPost,
   deletePost,
   getAllPosts,
   getOnePost,
+  updatePost,
 } from "../controllers/post.controller";
 
 const postRouter = Router();
@@ -34,6 +36,12 @@ postRouter.post(
   "/",
   [...createPostValidator, handleErrorsValidators],
   createPost
+);
+
+postRouter.put(
+  "/:id",
+  [...updatePostValidator, handleErrorsValidators],
+  updatePost
 );
 
 export default postRouter;

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadingState } from "../../../types/enums/generalEnums";
+import { loadingStateUser } from "../../../types/enums/generalEnums";
 import { ErrorInterface } from "../../../types/types/generalTypes";
 import {
   loginUserThunk,
@@ -30,45 +30,45 @@ const userSlice = createSlice({
         state.error = initialState.error;
         state.user = action.payload?.user;
         state.token = action.payload?.token;
-        state.loading = loadingState.SUCCEEDED;
+        state.loading = loadingStateUser.SUCCEEDED;
       })
       .addCase(loginUserThunk.pending, (state, _) => {
-        state.loading = loadingState.PENDING;
+        state.loading = loadingStateUser.PENDING;
       })
       .addCase(loginUserThunk.rejected, (state, action) => {
         state.user = initialState.user;
         state.token = initialState.token;
-        state.loading = loadingState.FAILED;
+        state.loading = loadingStateUser.FAILED;
         state.error = action.payload as ErrorInterface;
       })
       .addCase(recoveredLoginThunk.fulfilled, (state, action) => {
         state.error = initialState.error;
         state.user = action.payload?.user;
         state.token = action.payload?.token;
-        state.loading = loadingState.SUCCEEDED;
+        state.loading = loadingStateUser.SUCCEEDED;
       })
       .addCase(recoveredLoginThunk.rejected, (state, _) => {
         state.user = initialState.user;
         state.token = initialState.token;
-        state.loading = loadingState.FAILED;
+        state.loading = loadingStateUser.FAILED;
       })
       .addCase(logoutThunk.fulfilled, (state, _) => {
         state.user = initialState.user;
         state.token = initialState.token;
         state.error = initialState.error;
-        state.loading = loadingState.IDLE;
+        state.loading = loadingStateUser.SUCCEEDEDLOGOUT;
       })
       .addCase(registerUserThunk.fulfilled, (state, _) => {
         state.error = initialState.error;
-        state.loading = loadingState.SUCCEEDED;
+        state.loading = loadingStateUser.SUCCEEDED;
       })
       .addCase(registerUserThunk.pending, (state, _) => {
         state.error = initialState.error;
-        state.loading = loadingState.PENDING;
+        state.loading = loadingStateUser.PENDING;
       })
       .addCase(registerUserThunk.rejected, (state, action) => {
         state.error = action.payload as ErrorInterface;
-        state.loading = loadingState.FAILED;
+        state.loading = loadingStateUser.FAILED;
       });
   },
 });

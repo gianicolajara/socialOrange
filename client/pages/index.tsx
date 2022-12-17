@@ -1,18 +1,37 @@
-import { ReactElement, useState, useContext } from "react";
+import { ReactElement, useEffect } from "react";
 import Chat from "../components/Chat";
 import CreatePost from "../components/CreatePost";
 import GeneralLayout from "../components/Layouts/GeneralLayout";
-import ModalPost from "../components/ModalPost";
+import ModalsPost from "../components/ModalsPost";
+import ModalDeletePost from "../components/ModalsPost/ModalDeletePost";
 import Posts from "../components/Posts";
 import UserInformation from "../components/UserInformation";
-import { ModalContext } from "../contexts/modalContext";
+import {
+  addModalAction,
+  deleteModalAction,
+} from "../redux/slices/modal/modal.slice";
+import { useAppDispatch } from "../redux/store";
+import { modalsEnum } from "../types/enums/generalEnums";
 
 const Home = () => {
-  const { openModal, handleClose } = useContext(ModalContext);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(addModalAction(modalsEnum.updatepost));
+    dispatch(addModalAction(modalsEnum.deletepost));
+
+    return () => {
+      dispatch(deleteModalAction(modalsEnum.updatepost));
+      dispatch(deleteModalAction(modalsEnum.deletepost));
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
-      <ModalPost open={openModal} onClose={handleClose} />
+      <ModalsPost />
+      <ModalDeletePost />
       <section className="w-full h-full">
         <div className="grid grid-cols-[25%,_50%,_25%] grid-rows-1 w-full relative h-full">
           <div className="w-full h-full">

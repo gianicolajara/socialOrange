@@ -12,8 +12,9 @@ import Input from "../../components/Input";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { registerUserThunk } from "../../redux/thunks/user.thunk";
 import { useSelector } from "react-redux";
-import { loadingState, modeFormLogin } from "../../types/enums/generalEnums";
+import { loadingStateUser } from "../../types/enums/generalEnums";
 import { toast } from "react-toastify";
+import { errorToast, successToast } from "../../utils/toasts";
 
 const initialFormRegister = {
   username: "",
@@ -22,11 +23,7 @@ const initialFormRegister = {
   lastName: "",
 };
 
-interface FormRegisterProps {
-  setModeForm: Dispatch<SetStateAction<modeFormLogin>>;
-}
-
-const FormRegister = ({ setModeForm }: FormRegisterProps) => {
+const FormRegister = () => {
   const [formRegister, setformRegister] = useState(initialFormRegister);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -47,17 +44,13 @@ const FormRegister = ({ setModeForm }: FormRegisterProps) => {
   };
 
   useEffect(() => {
-    if (loading === loadingState.SUCCEEDED && !error) {
+    if (loading === loadingStateUser.SUCCEEDED && !error) {
       setformRegister(initialFormRegister);
-      toast("Usuario creado con exito", {
-        type: "success",
-      });
+      successToast("Usuario creado con exito");
     }
 
-    if (loading === loadingState.FAILED && error) {
-      toast("Algo fue mal, intentelo de nuevo", {
-        type: "error",
-      });
+    if (loading === loadingStateUser.FAILED && error) {
+      errorToast("Algo fue mal, intentelo de nuevo");
     }
   }, [error, loading, router]);
 
@@ -94,7 +87,7 @@ const FormRegister = ({ setModeForm }: FormRegisterProps) => {
           value={formRegister.password}
           error={error?.errors?.password?.msg}
         />
-        <Button type="submit" loading={loading === loadingState.PENDING}>
+        <Button type="submit" loading={loading === loadingStateUser.PENDING}>
           Crear
         </Button>
       </form>

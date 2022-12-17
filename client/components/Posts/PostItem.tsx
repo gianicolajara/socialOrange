@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { useContext } from "react";
 import { AiFillLike } from "react-icons/ai";
-import { ModalContext } from "../../contexts/modalContext";
+import { openModalAction } from "../../redux/slices/modal/modal.slice";
 import { useAppDispatch } from "../../redux/store";
 import { deletePostByIdThunk } from "../../redux/thunks/post.thunk";
+import { modalsEnum } from "../../types/enums/generalEnums";
 import { PostInterface } from "../../types/interfaces/post";
 import { getEstimatedTime } from "../../utils/times";
 import IconButton from "../Button/IconButton";
@@ -20,21 +20,25 @@ const PostItem = ({
   updatedAt,
 }: PostInterface) => {
   const dispatch = useAppDispatch();
-  const { handleOpen } = useContext(ModalContext);
 
   const createOptionsItem = (): Array<OptionsButtonItemProps> => [
     {
       id: 1,
       label: "Borrar",
       onClick: () => {
-        dispatch(deletePostByIdThunk(id as string));
+        dispatch(
+          openModalAction({ modalName: modalsEnum.deletepost, information: id })
+        );
+        //dispatch(deletePostByIdThunk(id as string));
       },
     },
     {
       id: 2,
       label: "Editar",
       onClick: () => {
-        handleOpen();
+        dispatch(
+          openModalAction({ modalName: modalsEnum.updatepost, information: id })
+        );
       },
     },
   ];
@@ -52,7 +56,7 @@ const PostItem = ({
           aria-label="user-post-information"
           className="w-full h-full flex items-center gap-3"
         >
-          <div className="w-[40px] h-[40px] rounded-full overflow-hidden ring-4 ring-orange-400">
+          <div className="w-[40px] h-[40px] rounded-full overflow-hidden ring-2 ring-neutral-400">
             {/*  <Image
               src={avatar}
               alt="avatar"
@@ -75,8 +79,8 @@ const PostItem = ({
             <IconButton>
               <AiFillLike />
             </IconButton>
+            <OptionsButton options={createOptionsItem()} />
           </div>
-          <OptionsButton options={createOptionsItem()} />
         </div>
       </div>
       {photo && (

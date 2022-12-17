@@ -4,12 +4,15 @@ import {
   createPostService,
   deletePostByIdService,
   getAllPostService,
+  updatePostByIdService,
 } from "../../services/post/post.services";
 import {
   PostFormInterface,
+  PostInterface,
   ResponseAxiosCreatePost,
   ResponseAxiosDeletePost,
   ResponseAxiosGetAllPosts,
+  ResponseAxiosUpdatePost,
 } from "../../types/interfaces/post";
 
 export const createPostThunk = createAsyncThunk(
@@ -38,8 +41,27 @@ export const getAllPostThunk = createAsyncThunk(
   }
 );
 
-export const deletePostByIdThunk = createAsyncThunk("delete/post", async (id: string, thunkApi) => {
-  return deletePostByIdService(id).then((res) => res.data as ResponseAxiosDeletePost).catch((err) => {
-    return thunkApi.rejectWithValue((err as AxiosError).response?.data)
-  })
-})
+export const deletePostByIdThunk = createAsyncThunk(
+  "delete/post",
+  async (id: string, thunkApi) => {
+    return deletePostByIdService(id)
+      .then((res) => res.data as ResponseAxiosDeletePost)
+      .catch((err) => {
+        return thunkApi.rejectWithValue((err as AxiosError).response?.data);
+      });
+  }
+);
+
+export const updatePostByIdThunk = createAsyncThunk(
+  "update/post",
+  async (
+    { post = {}, id = "" }: { post: PostFormInterface | {}; id: string },
+    thunkApi
+  ) => {
+    return updatePostByIdService(id, post as PostFormInterface)
+      .then((res) => res.data as ResponseAxiosUpdatePost)
+      .catch((err) => {
+        return thunkApi.rejectWithValue((err as AxiosError).response?.data);
+      });
+  }
+);

@@ -5,8 +5,9 @@ import Input from "../../components/Input";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { loginUserThunk } from "../../redux/thunks/user.thunk";
 import { useSelector } from "react-redux";
-import { loadingState } from "../../types/enums/generalEnums";
+import { loadingStateUser } from "../../types/enums/generalEnums";
 import { toast } from "react-toastify";
+import { errorToast } from "../../utils/toasts";
 
 const initialFormLogin = {
   username: "",
@@ -34,14 +35,12 @@ const FormLogin = () => {
   };
 
   useEffect(() => {
-    if (loading === loadingState.SUCCEEDED && !error) {
+    if (loading === loadingStateUser.SUCCEEDED && !error) {
       setFormLogin(initialFormLogin);
     }
 
-    if (loading === loadingState.FAILED && error) {
-      toast("Algo fue mal, intentelo de nuevo", {
-        type: "error",
-      });
+    if (loading === loadingStateUser.FAILED && error) {
+      errorToast("Algo fue mal, intentelo de nuevo");
     }
   }, [error, loading, router]);
 
@@ -64,7 +63,7 @@ const FormLogin = () => {
           value={formLogin.password}
           error={error?.errors?.password?.msg}
         />
-        <Button type="submit" loading={loading === loadingState.PENDING}>
+        <Button type="submit" loading={loading === loadingStateUser.PENDING}>
           Ingresar
         </Button>
       </form>

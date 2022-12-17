@@ -7,5 +7,6 @@ export interface TextAreaProps {
   onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void | undefined;
   className?: string | undefined;
   error?: string | undefined;
-  cols?: number | undefined;
+  rows?: number | undefined;
+  withBorder?: boolean;
 }

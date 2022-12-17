@@ -1,10 +1,10 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { createPostThunk } from "../../redux/thunks/post.thunk";
-import { loadingState } from "../../types/enums/generalEnums";
+import { loadingStatePost } from "../../types/enums/generalEnums";
 import { PostFormInterface } from "../../types/interfaces/post";
+import { successToast } from "../../utils/toasts";
 import Button from "../Button";
 import TextArea from "../TextArea";
 
@@ -39,37 +39,30 @@ const CreatePost = () => {
       creator: user?.id,
     } as PostFormInterface;
 
-    dispatch(createPostThunk(newPost)).then(() => {
-      toast("Nuevo post creado", {
-        type: "success",
-      });
-      setPostForm(initialPostForm);
-    });
+    dispatch(createPostThunk(newPost));
   };
 
-  /* useEffect(() => {
-    if (loading === loadingState.SUCCEEDED) {
-      toast("Nuevo post creado", {
-        type: "success",
-      });
-
+  useEffect(() => {
+    if (loading === loadingStatePost.SUCCEEDEDCREATED) {
+      successToast("Nuevo post creado");
       setPostForm(initialPostForm);
     }
   }, [loading]);
- */
+
   return (
-    <div className="w-full h-max border-2 border-orange-400 p-2 rounded-lg max-w-[500px] mx-auto mb-5">
+    <div className="w-full h-max border-[1px] border-neutral-300 p-2 rounded-lg max-w-[500px] mx-auto mb-5">
       <form onSubmit={handleSubmitPost}>
         <TextArea
           placeholder="Ingresa un post o foto"
+          rows={2}
           name="post"
           onChange={handleChangePostForm}
           value={postForm.post}
           error={error?.errors?.post}
         />
         <div className="w-full gap-1 flex justify-end">
-          <Button loading={loading === loadingState.PENDING}>Foto</Button>
-          <Button type="submit" loading={loading === loadingState.PENDING}>
+          <Button loading={loading === loadingStatePost.PENDING}>Foto</Button>
+          <Button type="submit" loading={loading === loadingStatePost.PENDING}>
             Subir
           </Button>
         </div>

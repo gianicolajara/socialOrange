@@ -4,6 +4,6 @@ import { ErrorInterface } from "../../../types/types/generalTypes";
 export interface InitialUserStateProps {
   user: UserInterface | null;
   token: string | null | undefined;
-  loading: "idle" | "pending" | "succeeded" | "failed";
+  loading: "idle" | "pending" | "succeeded" | "succeededLogout" | "failed";
   error: ErrorInterface | null;
 }

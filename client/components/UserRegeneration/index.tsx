@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { recoveredLoginThunk } from "../../redux/thunks/user.thunk";
-import { loadingState } from "../../types/enums/generalEnums";
+import { loadingStateUser } from "../../types/enums/generalEnums";
 
 interface UserRegenerationProps {
   children: React.ReactNode;
@@ -15,7 +15,7 @@ const UserRegeneration = ({ children }: UserRegenerationProps) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!user && loading === loadingState.IDLE) {
+    if (!user && loading === loadingStateUser.IDLE) {
       dispatch(recoveredLoginThunk());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

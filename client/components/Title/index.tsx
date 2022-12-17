@@ -4,7 +4,7 @@ const Title = ({
   children,
   bold = true,
   size = "text-4xl",
-  color = "text-orange-900",
+  color = "text-black",
 }: TitleProps) => {
   return (
     <h1 className={`${bold ? "font-bold" : ""} ${size} ${color}`}>

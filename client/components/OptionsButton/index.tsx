@@ -24,7 +24,7 @@ const OptionsButton = ({ options }: OptionsButtonProps) => {
         <IconButton onClick={handleOptionToggle}>
           <SlOptions />
           {optionOpen && (
-            <div className="min-w-[200px] w-max h-max bg-neutral-400/80 absolute top-[50px] left-0 rounded-lg overflow-hidden transition-all z-[99]">
+            <div className="min-w-[200px] w-max h-max bg-neutral-400/80 absolute top-[40px] left-0 rounded-lg overflow-hidden transition-all z-[99]">
               <ListButtonItem options={options} />
             </div>
           )}

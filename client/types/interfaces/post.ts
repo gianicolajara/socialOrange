@@ -30,6 +30,11 @@ export interface ResponseAxiosGetAllPosts {
 }
 
 export interface ResponseAxiosDeletePost {
- message: string; 
- id: string;
+  message: string;
+  id: string;
+}
+
+export interface ResponseAxiosUpdatePost {
+  message: string;
+  post: PostInterface;
 }
