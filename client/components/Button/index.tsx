@@ -1,9 +1,10 @@
+import { MouseEvent } from "react";
 import Loader from "../Loader";
 import { ButtonProps } from "./types";
 
 const Button = ({
   children,
-  onClick = () => {},
+  onClick = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {},
   loading = false,
   type = "button",
   className = "",

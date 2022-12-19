@@ -15,7 +15,7 @@ export const createPostService = ({
 }): Promise<AxiosResponse> => {
   return postFetch({
     pathUrl: serverPostUrl,
-    data: post || undefined,
+    data: post ?? {},
     withCredentials: true,
   });
 };

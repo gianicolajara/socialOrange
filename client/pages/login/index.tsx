@@ -16,11 +16,7 @@ const Login = () => {
           <PresentationLogin />
         </div>
         <div className="flex flex-col justify-center items-center w-full h-full bg-neutral-100">
-          {modeForm === modeFormLogin.LOGIN ? (
-            <FormLogin />
-          ) : (
-            <FormRegister setModeForm={setModeForm} />
-          )}
+          {modeForm === modeFormLogin.LOGIN ? <FormLogin /> : <FormRegister />}
           <div className="w-full flex flex-col justify-center items-center mt-5">
             <small className="text-orange-300 hover:text-orange-500 text-center transition-all select-none">
               {modeForm === modeFormLogin.LOGIN ? (

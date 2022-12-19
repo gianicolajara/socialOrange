@@ -17,6 +17,10 @@ export interface PostFormInterface {
   commentaries?: Array<any>;
 }
 
+export interface initialPhotoForm {
+  photoFile: File | undefined;
+}
+
 export type PostFormType = PostFormInterface | null | undefined;
 
 export interface ResponseAxiosCreatePost {
@@ -37,4 +41,13 @@ export interface ResponseAxiosDeletePost {
 export interface ResponseAxiosUpdatePost {
   message: string;
   post: PostInterface;
+}
+
+export interface ResponseAxiosCreateImage {
+  imageRes: {
+    extension: string;
+    id: string;
+    name: string;
+  };
+  message: string;
 }

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { PostInterface } from "interfaces";
 import { Types } from "mongoose";
+import { URL_IMAGES_FRONTEND } from "../config";
 import Post from "../model/post.model";
 
 export const getAllPosts = (
@@ -83,11 +84,10 @@ export const createPost = (req: Request, res: Response, next: NextFunction) => {
   const newPost = new Post({
     post,
     creator: new Types.ObjectId(creator),
-    photo,
+    photo: `${URL_IMAGES_FRONTEND}/${photo}`,
   });
 
   newPost
-
     .save()
     .then((postSaved) => {
       postSaved.populate("creator").then((postSavedPopulated) => {

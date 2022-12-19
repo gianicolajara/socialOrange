@@ -3,8 +3,12 @@ import MongoStore from "connect-mongo";
 import { v4 as uuidv4 } from "uuid";
 
 export const PORT = process.env.PORT || 5001;
+export const URL_PAGE = "http://localhost:5001";
 export const URL_MONGO = "mongodb://0.0.0.0:27017/socialOrange";
 export const JWT_SECRET = process.env.JWT_SECRET || "";
+export const BASE_URL = __dirname;
+export const URL_IMAGES_FOLDER_PUBLIC = `${BASE_URL}/public/images`;
+export const URL_IMAGES_FRONTEND = `${URL_PAGE}/public/images/`;
 
 export const SESSION_CONFIG: SessionOptions = {
   genid: (_) => {

@@ -8,7 +8,6 @@ import {
 } from "../../services/post/post.services";
 import {
   PostFormInterface,
-  PostInterface,
   ResponseAxiosCreatePost,
   ResponseAxiosDeletePost,
   ResponseAxiosGetAllPosts,

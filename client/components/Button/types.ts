@@ -1,3 +1,5 @@
+import { MouseEvent } from "react";
+
 export interface IconButtonProps {
   children?: React.ReactNode;
   onClick?: () => void;
@@ -7,7 +9,7 @@ export interface IconButtonProps {
 
 export interface ButtonProps {
   children?: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => void;
   loading?: boolean;
   type?: "button" | "submit" | "reset" | undefined;
   className?: string;

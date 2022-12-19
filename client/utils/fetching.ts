@@ -1,7 +1,7 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse, RawAxiosRequestHeaders } from "axios";
 
 const defaultHeaders = {
-  "Accept": "application/json",
+  Accept: "application/json",
   "Content-Type": "application/json",
 };
 
@@ -21,11 +21,13 @@ export const postFetch = ({
   pathUrl = "",
   withCredentials = false,
   data = {},
+  headers = {},
 }): Promise<AxiosResponse> => {
   return axios.post(pathUrl, data, {
     withCredentials,
     headers: {
       ...defaultHeaders,
+      ...headers,
     },
   });
 };
