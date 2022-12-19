@@ -15,7 +15,7 @@ export interface PostInterface {
   id?: Types.ObjectId;
   post: string;
   creator: Types.ObjectId;
-  photo?: string;
+  photo?: Types.ObjectId;
   commentaries?: Array<any>;
   createdAt: string;
   updatedAt: string;
@@ -25,4 +25,11 @@ export interface PostInterface {
 export interface UserModel extends Model<UserInterface> {
   hashPassword(password: string): string;
   validatePassword(password: string, hash: string): boolean;
+}
+
+export interface ImageInterface {
+  id: Types.ObjectId;
+  name: string;
+  extension: string;
+  relativePathUrl: string;
 }

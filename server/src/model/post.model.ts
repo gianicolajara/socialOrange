@@ -12,7 +12,8 @@ const postSchema = new Schema<PostInterface>(
       ref: "User",
     },
     photo: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Image",
     },
     commentaries: {
       type: [String],

@@ -87,7 +87,7 @@ const PostItem = ({
         <div aria-label="body-post" className="w-full h-[400px]">
           <div className="w-full h-full">
             <Image
-              src={photo}
+              src={photo.relativePathUrl}
               width={1000}
               height={400}
               alt="post-image"

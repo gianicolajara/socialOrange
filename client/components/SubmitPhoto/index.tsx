@@ -31,7 +31,7 @@ const SubmitPhoto = ({
       .then((res) => {
         const { imageRes } = res.data as ResponseAxiosCreateImage;
         setIdImage(imageRes.id);
-        handleSetUrlImage(`${imageRes.id}.${imageRes.extension}`);
+        handleSetUrlImage(imageRes.id);
         successToast("Su imagen fue subida correctamente");
       })
       .catch((err) => {

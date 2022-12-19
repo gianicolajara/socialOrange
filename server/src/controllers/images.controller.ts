@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { UploadedFile } from "express-fileupload";
-import { BASE_URL } from "../config";
+import { BASE_URL, URL_IMAGES_FRONTEND } from "../config";
 import { createPhoto } from "../utils/files.util";
 import Image from "../model/image.model";
 import fs from "fs";
@@ -32,10 +32,20 @@ export const createImage = (
         files
       );
 
-      return res.status(200).json({
-        message: "image saved successfully",
-        imageRes,
-      });
+      Image.findByIdAndUpdate(
+        imageRes.id,
+        {
+          relativePathUrl: `${URL_IMAGES_FRONTEND}/${imageRes.id}.${imageRes.extension}`,
+        },
+        (err) => {
+          if (err) return next(err);
+
+          return res.status(200).json({
+            message: "image saved successfully",
+            imageRes,
+          });
+        }
+      );
     })
     .catch((err) => {
       return next(err);

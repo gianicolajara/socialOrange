@@ -33,7 +33,6 @@ const CreatePost = () => {
   );
 
   const { user } = useSelector((state: RootState) => state.userReducer);
-
   const { loading, error } = useSelector(
     (state: RootState) => state.postReducer
   );
@@ -66,6 +65,7 @@ const CreatePost = () => {
       successToast("Nuevo post creado");
       setPostForm(initialPostForm);
       setDisplayImage(initialDisplayImage);
+      setUrlImage(initialUrlImage);
     }
   }, [loading]);
 

@@ -4,7 +4,12 @@ export interface PostInterface {
   id?: string;
   post: string;
   creator: UserInterface;
-  photo?: string;
+  photo?: {
+    name: string;
+    extension: string;
+    relativePathUrl: string;
+    id: string;
+  };
   commentaries?: Array<any>;
   createdAt: string;
   updatedAt: string;
@@ -48,6 +53,7 @@ export interface ResponseAxiosCreateImage {
     extension: string;
     id: string;
     name: string;
+    relativePathUrl: string;
   };
   message: string;
 }

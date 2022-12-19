@@ -1,9 +1,5 @@
+import { ImageInterface } from "interfaces";
 import { model, Schema } from "mongoose";
-
-interface ImageInterface {
-  name: string;
-  extension: string;
-}
 
 const imageSchema = new Schema<ImageInterface>({
   name: {
@@ -13,6 +9,9 @@ const imageSchema = new Schema<ImageInterface>({
   extension: {
     type: String,
     required: true,
+  },
+  relativePathUrl: {
+    type: String,
   },
 });
 
