@@ -3,9 +3,10 @@ import Button from "../Button";
 
 interface InputFileProps {
   handleChangeFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
 }
 
-const InputFile = ({ handleChangeFile }: InputFileProps) => {
+const InputFile = ({ handleChangeFile, value }: InputFileProps) => {
   const ref = useRef<HTMLInputElement | null>(null);
 
   const handleClickRef = (
@@ -19,6 +20,7 @@ const InputFile = ({ handleChangeFile }: InputFileProps) => {
         onChange={handleChangeFile}
         className="hidden"
         ref={ref}
+        value={value}
       />
       <Button onClick={handleClickRef}>Archivo</Button>
     </>

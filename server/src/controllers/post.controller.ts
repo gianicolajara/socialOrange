@@ -79,16 +79,17 @@ export const updatePost = (req: Request, res: Response, next: NextFunction) => {
       post,
       photo,
     },
-    { new: true },
-    (err, updatedPost) => {
+    { new: true }
+  )
+    .populate(["creator", "photo"])
+    .exec((err, updatedPost) => {
       if (err) return next(err);
 
       return res.status(200).json({
         message: "post updated successfully",
         post: updatedPost,
       });
-    }
-  );
+    });
 };
 
 export const createPost = (req: Request, res: Response, next: NextFunction) => {

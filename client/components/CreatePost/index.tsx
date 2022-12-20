@@ -21,14 +21,16 @@ const initialPostForm: PostFormInterface = {
   commentaries: [],
 };
 
-const initialUrlImage = "";
+const initialIdImage = "";
 const initialDisplayImage: string | ArrayBuffer | null = null;
+const initialSelectedFile = "";
 
 const CreatePost = () => {
   const dispatch = useAppDispatch();
   const [postForm, setPostForm] = useState(initialPostForm);
-  const [urlImage, setUrlImage] = useState(initialUrlImage);
-  const [displayImage, setDisplayImage] = useState<string | ArrayBuffer | null>(
+  const [idImageToSave, setIdImageToSave] = useState(initialIdImage);
+  const [selectedFile, setSelectedFile] = useState(initialSelectedFile);
+  const [urlBlobImage, setUrlBlobImage] = useState<string | ArrayBuffer | null>(
     initialDisplayImage
   );
 
@@ -49,7 +51,7 @@ const CreatePost = () => {
     const newPost = {
       ...postForm,
       creator: user?.id,
-      photo: urlImage, //only send image name with extension
+      photo: idImageToSave, //only send image name with extension
     } as PostFormInterface;
     dispatch(createPostThunk(newPost));
   };
@@ -64,8 +66,9 @@ const CreatePost = () => {
     if (loading === loadingStatePost.SUCCEEDEDCREATED) {
       successToast("Nuevo post creado");
       setPostForm(initialPostForm);
-      setDisplayImage(initialDisplayImage);
-      setUrlImage(initialUrlImage);
+      setUrlBlobImage(initialDisplayImage);
+      setIdImageToSave(initialIdImage);
+      setSelectedFile(initialSelectedFile);
     }
   }, [loading]);
 
@@ -82,11 +85,13 @@ const CreatePost = () => {
         />
         <div className="w-full gap-1 flex justify-end items-center">
           <SubmitPhoto
+            idImageToSave={idImageToSave}
+            handleSetIdImage={setIdImageToSave}
             handleOnChangeImage={handleOnChangeImage}
             handleDeleteImage={handleDeleteImage}
-            handleSetUrlImage={setUrlImage}
-            displayImageState={displayImage}
-            setDisplayImageState={setDisplayImage}
+            blobUrlImage={urlBlobImage}
+            setBlobUrlImage={setUrlBlobImage}
+            value={selectedFile}
           />
           <Button type="submit" loading={loading === loadingStatePost.PENDING}>
             Subir

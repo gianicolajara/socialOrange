@@ -9,15 +9,19 @@ import { SubmitPhotoProps } from "./types";
 const initialDisplayImage = null;
 const initialIdImage = "";
 
+//Permite subir una foto y ademas tener un menu para
+//poder eliminar la foto si no desea subirla y elegir otra
+//este componente devolvera un id que pertenece a la imagen
 const SubmitPhoto = ({
+  blobUrlImage,
+  setBlobUrlImage,
   handleOnChangeImage,
   handleDeleteImage,
-  handleSetUrlImage,
-  displayImageState,
-  setDisplayImageState,
+  handleSetIdImage,
+  idImageToSave,
+  value,
 }: SubmitPhotoProps) => {
   const [loadingImage, setLoadingImage] = useState(true);
-  const [idImage, setIdImage] = useState<string>(initialIdImage);
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoadingImage(true);
@@ -30,8 +34,7 @@ const SubmitPhoto = ({
     handleOnChangeImage(e.target.files[0])
       .then((res) => {
         const { imageRes } = res.data as ResponseAxiosCreateImage;
-        setIdImage(imageRes.id);
-        handleSetUrlImage(imageRes.id);
+        handleSetIdImage(imageRes.id);
         successToast("Su imagen fue subida correctamente");
       })
       .catch((err) => {
@@ -46,22 +49,22 @@ const SubmitPhoto = ({
       });
 
     fr.onload = () => {
-      setDisplayImageState(fr.result);
+      setBlobUrlImage(fr.result);
     };
 
     fr.readAsDataURL(e.target.files[0]);
   };
 
   const handleDeleteFile = () => {
-    handleDeleteImage(idImage).then(() => {
-      setDisplayImageState(initialDisplayImage);
-      setIdImage(initialIdImage);
+    handleDeleteImage(idImageToSave).then(() => {
+      setBlobUrlImage(initialDisplayImage);
+      handleSetIdImage(initialIdImage);
     });
   };
 
   return (
     <>
-      {displayImageState && (
+      {blobUrlImage && (
         <div className="w-[100px] h-max relative z-10 rounded-lg overflow-hidden">
           {loadingImage ? (
             <div className="w-full h-full absolute top-0 left-0 z-50">
@@ -77,14 +80,14 @@ const SubmitPhoto = ({
           )}
 
           <Image
-            src={displayImageState as string}
+            src={blobUrlImage as string}
             alt="image"
             width={100}
             height={100}
           />
         </div>
       )}
-      <InputFile handleChangeFile={handleChangeFile} />
+      <InputFile handleChangeFile={handleChangeFile} value={value} />
     </>
   );
 };

@@ -54,8 +54,9 @@ const ModalsPost = () => {
 
   useEffect(() => {
     setPostSelected({
-      creator: getPostById?.creator.id as string,
+      creator: getPostById?.creator?.id as string,
       post: getPostById?.post as string,
+      photo: getPostById?.photo?.id as string,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getPostById]);
