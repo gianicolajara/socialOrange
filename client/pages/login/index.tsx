@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { modeFormLogin } from "../../types/enums/generalEnums";
-import FormLogin from "./FormLogin";
-import FormRegister from "./FormRegister";
-import PresentationLogin from "./PresentationLogin";
+import FormLogin from "../../components/FormLogin";
+import FormRegister from "../../components/FormRegister";
+import PresentationLogin from "../../components/PresentationLogin";
 
 const Login = () => {
   const [modeForm, setModeForm] = useState(modeFormLogin.LOGIN);

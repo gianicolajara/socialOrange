@@ -1,30 +1,21 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  useState,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Button from "../../components/Button";
-import Input from "../../components/Input";
+import Button from "../Button";
+import Input from "../Input";
 import { RootState, useAppDispatch } from "../../redux/store";
-import { registerUserThunk } from "../../redux/thunks/user.thunk";
+import { loginUserThunk } from "../../redux/thunks/user.thunk";
 import { useSelector } from "react-redux";
 import { loadingStateUser } from "../../types/enums/generalEnums";
 import { toast } from "react-toastify";
-import { errorToast, successToast } from "../../utils/toasts";
+import { errorToast } from "../../utils/toasts";
 
-const initialFormRegister = {
+const initialFormLogin = {
   username: "",
   password: "",
-  firstName: "",
-  lastName: "",
 };
 
-const FormRegister = () => {
-  const [formRegister, setformRegister] = useState(initialFormRegister);
+const FormLogin = () => {
+  const [formLogin, setFormLogin] = useState(initialFormLogin);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { error, loading } = useSelector(
@@ -32,21 +23,20 @@ const FormRegister = () => {
   );
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setformRegister({
-      ...formRegister,
+    setFormLogin({
+      ...formLogin,
       [e.target.name]: e.target.value,
     });
   };
 
   const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(registerUserThunk(formRegister));
+    dispatch(loginUserThunk(formLogin));
   };
 
   useEffect(() => {
     if (loading === loadingStateUser.SUCCEEDED && !error) {
-      setformRegister(initialFormRegister);
-      successToast("Usuario creado con exito");
+      setFormLogin(initialFormLogin);
     }
 
     if (loading === loadingStateUser.FAILED && error) {
@@ -56,27 +46,13 @@ const FormRegister = () => {
 
   return (
     <div className="md:max-w-[400px] w-full h-max rounded-lg shadow-lg flex flex-col p-5 items-center bg-white ">
-      <h2 className="text-3xl mb-10">Registrar</h2>
+      <h2 className="text-3xl mb-10">Login</h2>
       <form onSubmit={handleOnSubmit} className="w-full flex flex-col gap-5">
-        <Input
-          placeholder="Nombre"
-          name="firstName"
-          onChange={handleOnChange}
-          value={formRegister.firstName}
-          error={error?.errors?.firstName?.msg}
-        />
-        <Input
-          placeholder="Apellido"
-          name="lastName"
-          onChange={handleOnChange}
-          value={formRegister.lastName}
-          error={error?.errors?.lastName?.msg}
-        />
         <Input
           placeholder="Usuario"
           name="username"
           onChange={handleOnChange}
-          value={formRegister.username}
+          value={formLogin.username}
           error={error?.errors?.username?.msg}
         />
         <Input
@@ -84,15 +60,15 @@ const FormRegister = () => {
           name="password"
           type="password"
           onChange={handleOnChange}
-          value={formRegister.password}
+          value={formLogin.password}
           error={error?.errors?.password?.msg}
         />
         <Button type="submit" loading={loading === loadingStateUser.PENDING}>
-          Crear
+          Ingresar
         </Button>
       </form>
     </div>
   );
 };
 
-export default FormRegister;
+export default FormLogin;

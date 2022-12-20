@@ -1,5 +1,5 @@
 import { AiFillCrown } from "react-icons/ai";
-import Title from "../../components/Title";
+import Title from "../Title";
 
 const PresentationLogin = () => {
   return (
