@@ -13,10 +13,15 @@ import { SESSION_CONFIG } from "./config";
 import postRouter from "./routes/post.routes";
 import fileUpload from "express-fileupload";
 import imageRouter from "./routes/images.routes";
+import userRouter from "./routes/user.routes";
+import { createServer } from "http";
+import { createSocket } from "./utils/socket.util";
 
 dotenv.config();
 
 const app = express();
+const server = createServer(app);
+const io = createSocket(server);
 
 app.set("trust proxy", 1);
 
@@ -46,9 +51,16 @@ app.use(
 app.use("/auth", authRouter);
 app.use("/post", postRouter);
 app.use("/image", imageRouter);
+app.use("/user", userRouter);
 app.use(notFoundRouter);
 
 //handle errors
 app.use(handleErrors);
 
-export default app;
+io.on("connection", (socket) => {
+  console.log("a user connected ", socket.id);
+});
+
+export default server;
+
+export { io };

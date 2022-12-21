@@ -9,6 +9,7 @@ export interface UserInterface {
   lastName: string;
   createdAt?: Date;
   updatedAt?: Date;
+  posts?: Array<PostInterface>;
 }
 
 export interface PostInterface {
@@ -17,8 +18,8 @@ export interface PostInterface {
   creator: Types.ObjectId;
   photo?: Types.ObjectId;
   commentaries?: Array<any>;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 //statics

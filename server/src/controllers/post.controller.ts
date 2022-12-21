@@ -4,6 +4,7 @@ import { Types } from "mongoose";
 import Image from "../model/image.model";
 import { URL_IMAGES_FOLDER_PUBLIC } from "../config";
 import Post from "../model/post.model";
+import User from "../model/user.model";
 import fs from "fs";
 
 export const getAllPosts = (
@@ -48,7 +49,7 @@ export const deletePost = (req: Request, res: Response, next: NextFunction) => {
   Post.findByIdAndDelete(id, (err: any, post: PostInterface) => {
     if (err) return next(err);
 
-    if (post.photo !== null) {
+    if (post.photo) {
       Image.findByIdAndDelete(post.photo, (err: any, image: ImageInterface) => {
         if (err) return next(err);
 
@@ -95,20 +96,36 @@ export const updatePost = (req: Request, res: Response, next: NextFunction) => {
 export const createPost = (req: Request, res: Response, next: NextFunction) => {
   const { post, creator, photo } = req.body;
 
-  const newPost = new Post({
+  let newPostBody: PostInterface = {
     post,
     creator: new Types.ObjectId(creator),
-    photo: new Types.ObjectId(photo),
-  });
+  };
+
+  if (photo) {
+    newPostBody = { ...newPostBody, photo: new Types.ObjectId(photo) };
+  }
+
+  const newPost = new Post(newPostBody);
 
   newPost
     .save()
     .then((postSaved) => {
       postSaved.populate(["creator", "photo"]).then((postSavedPopulated) => {
-        return res.status(200).json({
-          message: "Post saved successfully",
-          post: postSavedPopulated,
-        });
+        User.findByIdAndUpdate(
+          creator,
+          {
+            $push: {
+              posts: postSaved,
+            },
+          },
+          (err) => {
+            if (err) return next(err);
+            return res.status(200).json({
+              message: "Post saved successfully",
+              post: postSavedPopulated,
+            });
+          }
+        );
       });
     })
     .catch((err) => {

@@ -1,8 +1,15 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import {
+  deletePost,
+  insertPost,
+  updatePost,
+} from "../../redux/slices/post/post.slice";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { getAllPostThunk } from "../../redux/thunks/post.thunk";
-import PostItem from "./PostItem";
+import { PostInterface } from "../../types/interfaces/post";
+import { socket } from "../../utils/socket";
+import ListPost from "./ListPost";
 
 const Posts = () => {
   const dispatch = useAppDispatch();
@@ -10,39 +17,33 @@ const Posts = () => {
   const { posts } = useSelector((state: RootState) => state.postReducer);
 
   useEffect(() => {
+    socket.on("post->insert", (doc: PostInterface) => {
+      dispatch(insertPost(doc));
+    });
+
+    socket.on("post->delete", (id: string) => {
+      dispatch(deletePost(id));
+    });
+
+    socket.on("post->update", ({ id, updatedFields }) => {
+      dispatch(updatePost({ id, updatedFields }));
+    });
+
+    return () => {
+      socket.off("post->insert");
+      socket.off("post->delete");
+      socket.off("post->update");
+    };
+  }, []);
+
+  useEffect(() => {
     dispatch(getAllPostThunk());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!posts || posts.length === 0)
-    return <p className="text-center">No hay posts para mostrar</p>;
-
   return (
     <section className="flex flex-col w-full h-full gap-5 items-center">
-      {posts &&
-        posts.length > 0 &&
-        posts.map(
-          ({
-            creator,
-            post,
-            commentaries,
-            id,
-            photo,
-            createdAt,
-            updatedAt,
-          }) => (
-            <PostItem
-              key={id}
-              creator={creator}
-              post={post}
-              commentaries={commentaries}
-              id={id}
-              photo={photo}
-              createdAt={createdAt}
-              updatedAt={updatedAt}
-            />
-          )
-        )}
+      <ListPost posts={posts} />
     </section>
   );
 };

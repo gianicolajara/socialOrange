@@ -17,6 +17,13 @@ export enum loadingStateUser {
   "FAILED" = "failed",
 }
 
+export enum loadingStateProfile {
+  "IDLE" = "idle",
+  "PENDING" = "pending",
+  "SUCCEEDED" = "succeeded",
+  "FAILED" = "failed",
+}
+
 export enum modeFormLogin {
   "REGISTER" = "register",
   "LOGIN" = "login",

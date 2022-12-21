@@ -1,6 +1,7 @@
 import { PostInterface } from "interfaces";
 import { Schema, model } from "mongoose";
 import uniqueValidators from "mongoose-unique-validator";
+import { io } from "../app";
 
 const postSchema = new Schema<PostInterface>(
   {
@@ -36,5 +37,32 @@ postSchema.set("toJSON", {
 });
 
 const Post = model<PostInterface>("Post", postSchema);
+
+Post.watch().on("change", (data) => {
+  if (data.operationType === "insert") {
+    const { id } = data.fullDocument as PostInterface;
+
+    Post.findOne({ id }, {})
+      .populate(["creator", "photo"])
+      .exec((err, post) => {
+        if (err) throw new Error(err.message);
+
+        io.emit("post->insert", post);
+      });
+  }
+
+  if (data.operationType === "delete") {
+    io.emit("post->delete", data.documentKey._id);
+  }
+
+  if (data.operationType === "update") {
+    console.log(data);
+
+    const { _id: id } = data.documentKey;
+    const { updatedFields } = data.updateDescription;
+
+    io.emit("post->update", { id, updatedFields });
+  }
+});
 
 export default Post;

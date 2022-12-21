@@ -16,22 +16,8 @@ import { modalsEnum } from "../types/enums/generalEnums";
 const Home = () => {
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(addModalAction(modalsEnum.updatepost));
-    dispatch(addModalAction(modalsEnum.deletepost));
-
-    return () => {
-      dispatch(deleteModalAction(modalsEnum.updatepost));
-      dispatch(deleteModalAction(modalsEnum.deletepost));
-    };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <>
-      <ModalsPost />
-      <ModalDeletePost />
       <section className="w-full h-full">
         <div className="grid grid-cols-[25%,_50%,_25%] grid-rows-1 w-full relative h-full">
           <div className="w-full h-full">

@@ -21,7 +21,7 @@ const RoutesGuard = ({ children }: ProviderRoutesGuardProps) => {
     if (
       loading === loadingStateUser.FAILED ||
       loading === loadingStateUser.SUCCEEDED ||
-      loadingStateUser.SUCCEEDEDLOGOUT
+      loading === loadingStateUser.SUCCEEDEDLOGOUT
     ) {
       if (!user && router.pathname !== "/login") {
         router.push("/login");

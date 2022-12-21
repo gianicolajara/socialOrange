@@ -1,3 +1,5 @@
+import { PostInterface } from "./post";
+
 export interface UserForm {
   username: string;
   password: string;
@@ -9,8 +11,9 @@ export interface UserInterface {
   password: string;
   firstName: string;
   lastName: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
+  posts?: Array<PostInterface>;
 }
 
 export interface AxiosResponseLoginUser {

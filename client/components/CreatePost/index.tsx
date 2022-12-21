@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { resetLoading } from "../../redux/slices/post/post.slice";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { createPostThunk } from "../../redux/thunks/post.thunk";
 import {
@@ -69,6 +70,7 @@ const CreatePost = () => {
       setUrlBlobImage(initialDisplayImage);
       setIdImageToSave(initialIdImage);
       setSelectedFile(initialSelectedFile);
+      dispatch(resetLoading());
     }
   }, [loading]);
 

@@ -1,6 +1,6 @@
-import app from "./app";
+import server from "./app";
 import { PORT } from "./config";
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log("server listening port 5001");
 });

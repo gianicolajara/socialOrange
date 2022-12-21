@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Title from "../Title";
@@ -19,9 +20,11 @@ const UserInformation = () => {
               className="object-cover"
             />
           </div>
-          <Title size="text-xl" color="text-black">
-            {user?.firstName} {user?.lastName}
-          </Title>
+          <Link href={`/profile/${user?.username}`}>
+            <Title size="text-xl" color="text-black">
+              {user?.firstName} {user?.lastName}
+            </Title>
+          </Link>
           <small>@{user?.username}</small>
         </div>
       </div>

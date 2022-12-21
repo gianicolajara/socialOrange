@@ -12,6 +12,10 @@ export const userSchema = new Schema<UserInterface, UserModel>(
     firstName: { type: String },
     lastName: { type: String },
     password: { type: String },
+    posts: {
+      type: [Schema.Types.ObjectId],
+      ref: "Post",
+    },
   },
   {
     timestamps: true,

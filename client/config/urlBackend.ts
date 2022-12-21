@@ -12,3 +12,6 @@ export const serverPostUrl = `${serverUrl}/post`; //http://localhost:5001/post
 
 //images
 export const serverImageUrl = `${serverUrl}/image`; //http://localhost:5001/image
+
+//user
+export const serverUserUrl = `${serverUrl}/user`; //http://localhost:5001/user

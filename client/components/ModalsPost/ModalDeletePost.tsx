@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { closeModalAction } from "../../redux/slices/modal/modal.slice";
+import { resetLoading } from "../../redux/slices/post/post.slice";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { deletePostByIdThunk } from "../../redux/thunks/post.thunk";
 import { loadingStatePost, modalsEnum } from "../../types/enums/generalEnums";
@@ -24,6 +25,7 @@ const ModalDeletePost = () => {
     if (loading === loadingStatePost.SUCCEEDEDDELETED) {
       successToast("Post eliminado con exito");
       handleCloseModal();
+      dispatch(resetLoading());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);

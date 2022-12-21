@@ -33,3 +33,7 @@ export const getEstimatedTime = ({ language = "es-VE", timestamp = "" }) => {
     (unitAndTime?.unit as Intl.RelativeTimeFormatUnit) || "second"
   );
 };
+
+export const dateToHumanTime = ({ language = "es-VE", date = new Date() }) => {
+  return Intl.DateTimeFormat(language).format(date);
+};

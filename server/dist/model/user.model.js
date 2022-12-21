@@ -15,6 +15,10 @@ exports.userSchema = new mongoose_1.Schema({
     firstName: { type: String },
     lastName: { type: String },
     password: { type: String },
+    posts: {
+        type: [mongoose_1.Schema.Types.ObjectId],
+        ref: "Post",
+    },
 }, {
     timestamps: true,
 });
