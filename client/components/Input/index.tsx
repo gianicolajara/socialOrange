@@ -8,10 +8,14 @@ const Input = ({
   type = "text",
   className = "",
   error = undefined,
+  onBlur = () => {},
+  onMouseDown = () => {},
 }: InputProps) => {
   return (
     <>
       <input
+        onBlur={onBlur}
+        onMouseDown={onMouseDown}
         type={type}
         placeholder={placeholder}
         name={name}

@@ -35,3 +35,7 @@ export interface AxiosResponseRegisterUser {
   message: string;
   user: UserInterface;
 }
+
+export interface AxiosResponseGetListOfUsersByName {
+  users: Array<UserInterface>;
+}

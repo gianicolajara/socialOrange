@@ -43,3 +43,21 @@ export const getUserByName = (
       });
     });
 };
+
+export const getListOfUserByName = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { name } = req.body;
+
+  User.find({ firstName: { $regex: name, $options: "i" } }, {})
+    .limit(5)
+    .exec((err, doc) => {
+      if (err) return next(err);
+
+      return res.status(200).json({
+        users: doc,
+      });
+    });
+};

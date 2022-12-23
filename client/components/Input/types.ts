@@ -8,4 +8,6 @@ export interface InputProps {
   type?: React.HTMLInputTypeAttribute | undefined;
   className?: string | undefined;
   error?: string | undefined;
+  onBlur?: () => void;
+  onMouseDown?: () => void;
 }
