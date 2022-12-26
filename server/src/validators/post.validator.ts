@@ -51,3 +51,8 @@ export const getOnePostValidator = [
   param("id").isMongoId().withMessage("id is required"),
   cookie("JWT_TOKEN").isJWT().withMessage("token is required"),
 ];
+
+export const likePostValidator = [
+  param("id").isMongoId().withMessage("id is required"),
+  cookie("JWT_TOKEN").isJWT().withMessage("token is required"),
+];

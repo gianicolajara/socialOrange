@@ -4,6 +4,7 @@ import {
   createPostService,
   deletePostByIdService,
   getAllPostService,
+  likePostByIdService,
   updatePostByIdService,
 } from "../../services/post/post.services";
 import {
@@ -59,6 +60,20 @@ export const updatePostByIdThunk = createAsyncThunk(
   ) => {
     return updatePostByIdService(id, post as PostFormInterface)
       .then((res) => res.data as ResponseAxiosUpdatePost)
+      .catch((err) => {
+        return thunkApi.rejectWithValue((err as AxiosError).response?.data);
+      });
+  }
+);
+
+export const likePostByIdThunk = createAsyncThunk(
+  "update/likePost",
+  async (id: string, thunkApi) => {
+    return likePostByIdService(id)
+      .then((res) => {
+        console.log("haciendo like");
+        return thunkApi.fulfillWithValue(res.data);
+      })
       .catch((err) => {
         return thunkApi.rejectWithValue((err as AxiosError).response?.data);
       });

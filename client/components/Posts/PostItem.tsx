@@ -1,15 +1,10 @@
 import Image from "next/image";
 import { AiFillLike } from "react-icons/ai";
-import { useSelector } from "react-redux";
-import { openModalAction } from "../../redux/slices/modal/modal.slice";
-import { RootState, useAppDispatch } from "../../redux/store";
-import { deletePostByIdThunk } from "../../redux/thunks/post.thunk";
-import { modalsEnum } from "../../types/enums/generalEnums";
+import { useAppDispatch } from "../../redux/store";
 import { PostInterface } from "../../types/interfaces/post";
 import { getEstimatedTime } from "../../utils/times";
 import IconButton from "../Button/IconButton";
 import OptionsButton from "../OptionsButton";
-import { OptionsButtonItemProps } from "../OptionsButton/types";
 
 const PostItem = ({
   id = "",
@@ -21,6 +16,9 @@ const PostItem = ({
   updatedAt = "",
   ownerPost = false,
   ownerOptions = () => [],
+  likes = 0,
+  handleOnLike = () => {},
+  loadingLike = false,
 }: PostInterface) => {
   const dispatch = useAppDispatch();
 
@@ -56,8 +54,8 @@ const PostItem = ({
         </div>
         <div className="flex gap-2">
           <div className="flex justify-center items-center gap-3">
-            <p>{0}</p>
-            <IconButton>
+            <p>{likes}</p>
+            <IconButton onClick={() => handleOnLike(id)} loading={loadingLike}>
               <AiFillLike />
             </IconButton>
             {ownerPost && <OptionsButton options={ownerOptions(id)} />}

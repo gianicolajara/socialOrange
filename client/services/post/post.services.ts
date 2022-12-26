@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { serverPostUrl } from "../../config/urlBackend";
+import { likePostUrl, serverPostUrl } from "../../config/urlBackend";
 import { PostFormInterface, PostFormType } from "../../types/interfaces/post";
 import {
   deleteFetch,
@@ -38,6 +38,13 @@ export const updatePostByIdService = (id = "", post: PostFormInterface) => {
   return putFetch({
     pathUrl: `${serverPostUrl}/${id}`,
     data: post,
+    withCredentials: true,
+  });
+};
+
+export const likePostByIdService = (id = "") => {
+  return putFetch({
+    pathUrl: `${likePostUrl}/${id}`,
     withCredentials: true,
   });
 };

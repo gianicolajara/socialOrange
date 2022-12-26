@@ -132,3 +132,60 @@ export const createPost = (req: Request, res: Response, next: NextFunction) => {
       return next(err);
     });
 };
+
+export const likePost = (req: Request, res: Response, next: NextFunction) => {
+  //post/like -> method post
+  const { id } = req.params;
+
+  User.findById(req.session.user)
+    .where("ratings")
+    .in([id])
+    .exec((errUser, docUser) => {
+      if (errUser) return next(errUser);
+
+      if (docUser === null) {
+        User.findByIdAndUpdate(
+          req.session.user,
+          {
+            $push: {
+              ratings: new Types.ObjectId(id as string),
+            },
+          },
+          { new: true },
+          (errUserUpdatePush) => {
+            if (errUserUpdatePush) return next(errUserUpdatePush);
+          }
+        );
+      } else {
+        User.findByIdAndUpdate(
+          req.session.user,
+          {
+            $pull: {
+              ratings: new Types.ObjectId(id as string),
+            },
+          },
+          { new: true },
+          (errUserUpdateDelete) => {
+            if (errUserUpdateDelete) return next(errUserUpdateDelete);
+          }
+        );
+      }
+
+      Post.findByIdAndUpdate(
+        id,
+        {
+          $inc: {
+            likes: docUser ? -1 : 1,
+          },
+        },
+        { new: true },
+        (errUpdatePost) => {
+          if (errUpdatePost) return next(errUpdatePost);
+
+          return res.status(200).json({
+            message: "liked successfully",
+          });
+        }
+      );
+    });
+};

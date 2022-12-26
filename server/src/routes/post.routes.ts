@@ -5,6 +5,7 @@ import {
   deletePostValidator,
   getAllPostsValidtor,
   getOnePostValidator,
+  likePostValidator,
   updatePostValidator,
 } from "../validators/post.validator";
 import {
@@ -12,6 +13,7 @@ import {
   deletePost,
   getAllPosts,
   getOnePost,
+  likePost,
   updatePost,
 } from "../controllers/post.controller";
 
@@ -42,6 +44,12 @@ postRouter.put(
   "/:id",
   [...updatePostValidator, handleErrorsValidators],
   updatePost
+);
+
+postRouter.put(
+  "/like/:id",
+  [...likePostValidator, handleErrorsValidators],
+  likePost
 );
 
 export default postRouter;

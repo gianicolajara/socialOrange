@@ -6,13 +6,14 @@ import {
   createPostThunk,
   deletePostByIdThunk,
   getAllPostThunk,
+  likePostByIdThunk,
   updatePostByIdThunk,
 } from "../../thunks/post.thunk";
 import { InitialPostState } from "./type";
 
 const initialState: InitialPostState = {
   error: null,
-  loading: "idle",
+  loading: loadingStatePost.IDLE,
   posts: [],
 };
 
@@ -23,11 +24,11 @@ const postSlice = createSlice({
   reducers: {
     resetPosts: (state) => {
       state.error = null;
-      state.loading = "idle";
+      state.loading = loadingStatePost.IDLE;
       state.posts = [];
     },
     resetLoading: (state) => {
-      state.loading = "idle";
+      state.loading = loadingStatePost.IDLE;
     },
     insertPost: (state, action) => {
       state.posts = [action.payload as PostInterface, ...state.posts];
@@ -94,6 +95,18 @@ const postSlice = createSlice({
         state.loading = loadingStatePost.PENDING;
       })
       .addCase(updatePostByIdThunk.rejected, (state, action) => {
+        state.loading = loadingStatePost.FAILED;
+        state.error = action.payload as ErrorInterface;
+      })
+      .addCase(likePostByIdThunk.fulfilled, (state, action) => {
+        state.loading = loadingStatePost.SUCCEEDEDLIKED;
+        state.error = initialState.error;
+      })
+      .addCase(likePostByIdThunk.pending, (state, action) => {
+        state.loading = loadingStatePost.PENDING;
+        state.error = initialState.error;
+      })
+      .addCase(likePostByIdThunk.rejected, (state, action) => {
         state.loading = loadingStatePost.FAILED;
         state.error = action.payload as ErrorInterface;
       });

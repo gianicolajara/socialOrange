@@ -10,7 +10,13 @@ import ModalDeletePost from "../ModalsPost/ModalDeletePost";
 import PostItem from "./PostItem";
 import { ListPostProps } from "./types";
 
-const ListPost = ({ posts, ownerOptions, ownerPost }: ListPostProps) => {
+const ListPost = ({
+  posts,
+  ownerOptions,
+  ownerPost,
+  handleOnLike = () => {},
+  loadingLike = false,
+}: ListPostProps) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -39,6 +45,7 @@ const ListPost = ({ posts, ownerOptions, ownerPost }: ListPostProps) => {
             photo,
             createdAt,
             updatedAt,
+            likes,
           }) => (
             <PostItem
               key={id}
@@ -51,6 +58,9 @@ const ListPost = ({ posts, ownerOptions, ownerPost }: ListPostProps) => {
               updatedAt={updatedAt}
               ownerOptions={ownerOptions}
               ownerPost={ownerPost(creator.id || "")}
+              likes={likes}
+              handleOnLike={handleOnLike}
+              loadingLike={loadingLike}
             />
           )
         )

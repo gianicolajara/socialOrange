@@ -16,6 +16,9 @@ export interface PostInterface {
   updatedAt: string;
   ownerPost?: boolean;
   ownerOptions?: (id: string) => Array<OptionsButtonItemProps>;
+  likes: number;
+  handleOnLike: (id: string) => void;
+  loadingLike: boolean;
 }
 
 export interface PostFormInterface {

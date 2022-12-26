@@ -6,6 +6,7 @@ export enum loadingStatePost {
   "SUCCEEDEDCREATED" = "succeededCreated",
   "SUCCEEDEDUPDATED" = "succeededUpdated",
   "SUCCEEDEDDELETED" = "succeededDeleted",
+  "SUCCEEDEDLIKED" = "succeededLiked",
   "FAILED" = "failed",
 }
 

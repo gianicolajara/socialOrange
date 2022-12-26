@@ -5,6 +5,7 @@ export interface IconButtonProps {
   onClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  loading?: boolean;
 }
 
 export interface ButtonProps {

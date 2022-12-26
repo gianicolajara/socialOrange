@@ -5,4 +5,6 @@ export interface ListPostProps {
   posts: Array<PostInterface>;
   ownerPost: (id: string) => boolean;
   ownerOptions: (id: string) => Array<OptionsButtonItemProps>;
+  handleOnLike: (id: string) => void;
+  loadingLike: boolean;
 }

@@ -10,6 +10,7 @@ export interface UserInterface {
   createdAt?: Date;
   updatedAt?: Date;
   posts?: Array<PostInterface>;
+  ratings?: Array<Types.ObjectId>;
 }
 
 export interface PostInterface {
@@ -20,6 +21,7 @@ export interface PostInterface {
   commentaries?: Array<any>;
   createdAt?: string;
   updatedAt?: string;
+  likes?: Number;
 }
 
 //statics

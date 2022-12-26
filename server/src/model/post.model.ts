@@ -20,6 +20,9 @@ const postSchema = new Schema<PostInterface>(
       type: [String],
       default: [],
     },
+    likes: {
+      type: Number,
+    },
   },
   {
     timestamps: true,

@@ -7,8 +7,11 @@ import {
   updatePost,
 } from "../../redux/slices/post/post.slice";
 import { RootState, useAppDispatch } from "../../redux/store";
-import { getAllPostThunk } from "../../redux/thunks/post.thunk";
-import { modalsEnum } from "../../types/enums/generalEnums";
+import {
+  getAllPostThunk,
+  likePostByIdThunk,
+} from "../../redux/thunks/post.thunk";
+import { loadingStatePost, modalsEnum } from "../../types/enums/generalEnums";
 import { PostInterface } from "../../types/interfaces/post";
 import { socket } from "../../utils/socket";
 import { OptionsButtonItemProps } from "../OptionsButton/types";
@@ -18,7 +21,9 @@ const Posts = () => {
   const dispatch = useAppDispatch();
 
   const { posts } = useSelector((state: RootState) => state.postReducer);
-  const { user } = useSelector((state: RootState) => state.userReducer);
+  const { user, loading } = useSelector(
+    (state: RootState) => state.userReducer
+  );
 
   const createOptionsItem = (id = ""): Array<OptionsButtonItemProps> => [
     {
@@ -40,6 +45,10 @@ const Posts = () => {
       },
     },
   ];
+
+  const likeButtonPost = (id = "") => {
+    dispatch(likePostByIdThunk(id));
+  };
 
   const getPermisionsOwnerPost = (id: string) => {
     return user?.id === id;
@@ -76,6 +85,8 @@ const Posts = () => {
         posts={posts}
         ownerOptions={createOptionsItem}
         ownerPost={getPermisionsOwnerPost}
+        handleOnLike={likeButtonPost}
+        loadingLike={loading === loadingStatePost.PENDING}
       />
     </section>
   );

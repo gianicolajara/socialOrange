@@ -9,6 +9,7 @@ export const serverAuthRegisterUrl = `${serverAuthUrl}/register`; //http://local
 
 //posts
 export const serverPostUrl = `${serverUrl}/post`; //http://localhost:5001/post
+export const likePostUrl = `${serverPostUrl}/like`; //http://localhost:5001/post/like/:id
 
 //images
 export const serverImageUrl = `${serverUrl}/image`; //http://localhost:5001/image
