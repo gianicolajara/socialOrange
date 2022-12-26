@@ -23,7 +23,7 @@ const createImage = (req, res, next) => {
     newImage
         .save()
         .then((imageRes) => {
-        (0, files_util_1.createPhoto)(`${config_1.BASE_URL}/public/images/${imageRes.id}.${extension}`, files);
+        (0, files_util_1.createPhoto)(`${config_1.BASE_URL}/public/images/${imageRes.id}.${extension}`, files, next);
         image_model_1.default.findByIdAndUpdate(imageRes.id, {
             relativePathUrl: `${config_1.URL_IMAGES_FRONTEND}/${imageRes.id}.${imageRes.extension}`,
         }, (err) => {

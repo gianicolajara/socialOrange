@@ -1,26 +1,24 @@
-const myStorage = window.localStorage || null;
-
-export const setItemLS = (key: string = "", data: object = {}) => {
-  if (!key || !data || myStorage === null)
+export const setItemLS = (key: string = "", data: any) => {
+  if (!key || !data || localStorage === null)
     throw new Error("Error en su local storage");
 
-  myStorage.setItem(key, JSON.stringify(data));
+  localStorage.setItem(key, JSON.stringify(data));
 };
 
 export const getItemLS = (key: string = "") => {
-  if (!key || myStorage === null || !myStorage.getItem(key))
+  if (!key || localStorage === null)
     throw new Error("Error en su local storage");
 
-  if (myStorage.getItem(key)) {
-    return JSON.parse(myStorage.getItem(key) as string);
+  if (localStorage.getItem(key)) {
+    return JSON.parse(localStorage.getItem(key) as string);
   }
 };
 
 export const deleteItemLS = (key: string = "") => {
-  if (!key || myStorage === null || !myStorage.getItem(key))
+  if (!key || localStorage === null || !localStorage.getItem(key))
     throw new Error("Error en su local storage");
 
-  if (myStorage.getItem(key)) {
-    myStorage.removeItem(key);
+  if (localStorage.getItem(key)) {
+    localStorage.removeItem(key);
   }
 };

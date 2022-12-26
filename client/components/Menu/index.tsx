@@ -13,8 +13,10 @@ import { resetPosts } from "../../redux/slices/post/post.slice";
 import { getListOfUserByNameService } from "../../services/user/user.services";
 import { AxiosResponseGetListOfUsersByName } from "../../types/interfaces/user";
 import { ListToShowInterface } from "../Search/types";
+import { getItemLS, setItemLS } from "../../utils/localStorage";
 
 const initialUsersList: Array<ListToShowInterface> = [];
+const initialRecentUserSearch: Array<ListToShowInterface> = [];
 
 const Menu = () => {
   const dispatch = useAppDispatch();
@@ -22,6 +24,8 @@ const Menu = () => {
   const [searchText, setSearchText] = useState("");
   const [usersList, setUsersList] =
     useState<Array<ListToShowInterface>>(initialUsersList);
+  const [recentUserSearch, setRecentUserSearch] =
+    useState<Array<ListToShowInterface>>();
 
   const { loading } = useSelector((state: RootState) => state.userReducer);
 
@@ -44,12 +48,35 @@ const Menu = () => {
     });
   };
 
+  const handleOnMouseDownSearchItem = (id = "", path = "", label = "") => {
+    let recentProfilesLS: Array<ListToShowInterface> =
+      getItemLS("recent-profiles") || [];
+    let itemAlreadyExits: boolean = recentProfilesLS.some(
+      (item) => item.id === id
+    );
+
+    if (!itemAlreadyExits) {
+      recentProfilesLS =
+        recentProfilesLS.length >= 5
+          ? recentProfilesLS.slice(-1)
+          : recentProfilesLS;
+
+      setItemLS("recent-profiles", [...recentProfilesLS, { id, path, label }]);
+    }
+
+    router.push(`/profile/${path}`);
+  };
+
   useEffect(() => {
     if (loading === loadingStateUser.SUCCEEDEDLOGOUT) {
       dispatch(resetPosts());
       router.push("/login");
     }
   }, [dispatch, loading, router]);
+
+  useEffect(() => {
+    setRecentUserSearch(getItemLS("recent-profiles") || []);
+  }, []);
 
   return (
     <nav className="w-full h-[60px] fixed flex justify-between items-center px-10 border-b-[1px] border-neutral-300 top-0 left-0 bg-white z-[999] ">
@@ -63,6 +90,8 @@ const Menu = () => {
           listToShow={usersList}
           setListToShow={setUsersList}
           setValue={setSearchText}
+          handleOnMouseDownSearchItem={handleOnMouseDownSearchItem}
+          recentListToShow={recentUserSearch}
         />
       </div>
       <div className="w-[30%] flex">

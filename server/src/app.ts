@@ -59,6 +59,18 @@ app.use(handleErrors);
 
 io.on("connection", (socket) => {
   console.log("a user connected ", socket.id);
+  console.log(
+    "number of connections on connect action",
+    io.engine.clientsCount
+  );
+
+  socket.on("disconnect", (reason) => {
+    console.log("a user disconnected", reason);
+    console.log(
+      "number of connections on disconnect action",
+      io.engine.clientsCount
+    );
+  });
 });
 
 export default server;

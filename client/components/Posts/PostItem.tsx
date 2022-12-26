@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { AiFillLike } from "react-icons/ai";
+import { useSelector } from "react-redux";
 import { openModalAction } from "../../redux/slices/modal/modal.slice";
-import { useAppDispatch } from "../../redux/store";
+import { RootState, useAppDispatch } from "../../redux/store";
 import { deletePostByIdThunk } from "../../redux/thunks/post.thunk";
 import { modalsEnum } from "../../types/enums/generalEnums";
 import { PostInterface } from "../../types/interfaces/post";
@@ -11,37 +12,17 @@ import OptionsButton from "../OptionsButton";
 import { OptionsButtonItemProps } from "../OptionsButton/types";
 
 const PostItem = ({
-  id,
+  id = "",
   photo,
   post,
   creator,
-  commentaries,
-  createdAt,
-  updatedAt,
+  commentaries = [],
+  createdAt = "",
+  updatedAt = "",
+  ownerPost = false,
+  ownerOptions = () => [],
 }: PostInterface) => {
   const dispatch = useAppDispatch();
-
-  const createOptionsItem = (): Array<OptionsButtonItemProps> => [
-    {
-      id: 1,
-      label: "Borrar",
-      onClick: () => {
-        dispatch(
-          openModalAction({ modalName: modalsEnum.deletepost, information: id })
-        );
-        //dispatch(deletePostByIdThunk(id as string));
-      },
-    },
-    {
-      id: 2,
-      label: "Editar",
-      onClick: () => {
-        dispatch(
-          openModalAction({ modalName: modalsEnum.updatepost, information: id })
-        );
-      },
-    },
-  ];
 
   return (
     <article
@@ -79,7 +60,7 @@ const PostItem = ({
             <IconButton>
               <AiFillLike />
             </IconButton>
-            <OptionsButton options={createOptionsItem()} />
+            {ownerPost && <OptionsButton options={ownerOptions(id)} />}
           </div>
         </div>
       </div>

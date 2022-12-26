@@ -1,27 +1,41 @@
-import { useRouter } from "next/router";
-import { ListToShowInterface } from "./types";
+import ItemSearch from "./ItemSearch";
+import { ListSearchProps } from "./types";
 
-interface ListSearchProps {
-  listToShow: Array<ListToShowInterface>;
-  focus: boolean;
-}
-
-const ListSearch = ({ listToShow = [], focus = false }: ListSearchProps) => {
-  const router = useRouter();
-
+const ListSearch = ({
+  listToShow = [],
+  focus = false,
+  handleOnMouseDownSearchItem = () => {},
+  recentListToShow = [],
+}: ListSearchProps) => {
   return (
     <>
-      {listToShow && listToShow.length > 0 && focus && (
-        <ul className="absolute top-[50px] w-full bg-neutral-200 rounded-lg overflow-hidden">
-          {listToShow.map((item) => (
-            <li
-              key={item.id}
-              className="p-2 hover:bg-neutral-300/70 cursor-pointer"
-              onMouseDown={() => router.push(`/profile/${item.path}`)}
-            >
-              {item.label}
-            </li>
-          ))}
+      {focus && (
+        <ul className="absolute top-[50px] w-full bg-neutral-200 rounded-lg overflow-hidden p-2">
+          {listToShow &&
+            listToShow.length > 0 &&
+            listToShow.map(({ id, label, path }) => (
+              <ItemSearch
+                id={id}
+                label={label}
+                path={path}
+                key={id}
+                handleOnMouseDownSearchItem={handleOnMouseDownSearchItem}
+              />
+            ))}
+          {recentListToShow && recentListToShow.length > 0 && (
+            <div className="w-full">
+              <small className="font-bold">Recent searches</small>
+              {recentListToShow.map(({ id, label, path }) => (
+                <ItemSearch
+                  id={id}
+                  label={label}
+                  path={path}
+                  key={id}
+                  handleOnMouseDownSearchItem={handleOnMouseDownSearchItem}
+                />
+              ))}
+            </div>
+          )}
         </ul>
       )}
     </>

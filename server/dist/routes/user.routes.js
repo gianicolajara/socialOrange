@@ -7,5 +7,6 @@ const user_controller_1 = require("../controllers/user.controller");
 const verifyToken_1 = require("../middlewares/verifyToken");
 const userRouter = (0, express_1.Router)();
 userRouter.get("/:name", [...user_validator_1.getUserByNameValidator, validatorHandleError_1.handleErrorsValidators, verifyToken_1.verifyToken], user_controller_1.getUserByName);
+userRouter.post("/", [...user_validator_1.getListOfUserByNameValidator, validatorHandleError_1.handleErrorsValidators, verifyToken_1.verifyToken], user_controller_1.getListOfUserByName);
 exports.default = userRouter;
 //# sourceMappingURL=user.routes.js.map

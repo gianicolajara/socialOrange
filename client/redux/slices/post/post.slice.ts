@@ -30,7 +30,7 @@ const postSlice = createSlice({
       state.loading = "idle";
     },
     insertPost: (state, action) => {
-      state.posts = [...state.posts, action.payload as PostInterface];
+      state.posts = [action.payload as PostInterface, ...state.posts];
     },
     deletePost: (state, action) => {
       state.posts = state.posts.filter((post) => post.id !== action.payload);

@@ -1,5 +1,4 @@
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Input from "../Input";
 import ListSearch from "./ListSearch";
 import { SearchProps } from "./types";
@@ -12,9 +11,11 @@ const Search = ({
   listToShow = [],
   setListToShow = () => {},
   setValue = () => {},
+  handleOnMouseDownSearchItem = () => {},
+  recentListToShow = [],
 }: SearchProps) => {
   const [focus, setFocus] = useState(initialFocus);
-  const router = useRouter();
+  const ref = useRef<HTMLInputElement | null>(null);
 
   const handleOnFocus = () => setFocus(true);
   const handleOnBlur = () => {
@@ -22,6 +23,21 @@ const Search = ({
     setValue("");
     setListToShow([]);
   };
+
+  const handleCloseByKey = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setFocus(initialFocus);
+      ref.current?.blur();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleCloseByKey);
+
+    return () => {
+      document.removeEventListener("keydown", handleCloseByKey);
+    };
+  }, []);
 
   return (
     <form className="flex w-full h-[35px] justify-center items-center relative">
@@ -33,8 +49,14 @@ const Search = ({
         value={value}
         onMouseDown={handleOnFocus}
         onBlur={handleOnBlur}
+        ref={ref}
       />
-      <ListSearch focus={focus} listToShow={listToShow} />
+      <ListSearch
+        focus={focus}
+        listToShow={listToShow}
+        handleOnMouseDownSearchItem={handleOnMouseDownSearchItem}
+        recentListToShow={recentListToShow}
+      />
     </form>
   );
 };

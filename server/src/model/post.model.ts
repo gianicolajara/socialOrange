@@ -40,9 +40,9 @@ const Post = model<PostInterface>("Post", postSchema);
 
 Post.watch().on("change", (data) => {
   if (data.operationType === "insert") {
-    const { id } = data.fullDocument as PostInterface;
+    const { _id: id } = data.fullDocument;
 
-    Post.findOne({ id }, {})
+    Post.findById(id, {})
       .populate(["creator", "photo"])
       .exec((err, post) => {
         if (err) throw new Error(err.message);
@@ -56,8 +56,6 @@ Post.watch().on("change", (data) => {
   }
 
   if (data.operationType === "update") {
-    console.log(data);
-
     const { _id: id } = data.documentKey;
     const { updatedFields } = data.updateDescription;
 

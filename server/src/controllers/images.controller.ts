@@ -29,7 +29,8 @@ export const createImage = (
     .then((imageRes) => {
       createPhoto(
         `${BASE_URL}/public/images/${imageRes.id}.${extension}`,
-        files
+        files,
+        next
       );
 
       Image.findByIdAndUpdate(

@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const mongoose_unique_validator_1 = __importDefault(require("mongoose-unique-validator"));
+const app_1 = require("../app");
 const postSchema = new mongoose_1.Schema({
     post: {
         type: String,
@@ -33,5 +34,25 @@ postSchema.set("toJSON", {
     },
 });
 const Post = (0, mongoose_1.model)("Post", postSchema);
+Post.watch().on("change", (data) => {
+    if (data.operationType === "insert") {
+        const { _id: id } = data.fullDocument;
+        Post.findById(id, {})
+            .populate(["creator", "photo"])
+            .exec((err, post) => {
+            if (err)
+                throw new Error(err.message);
+            app_1.io.emit("post->insert", post);
+        });
+    }
+    if (data.operationType === "delete") {
+        app_1.io.emit("post->delete", data.documentKey._id);
+    }
+    if (data.operationType === "update") {
+        const { _id: id } = data.documentKey;
+        const { updatedFields } = data.updateDescription;
+        app_1.io.emit("post->update", { id, updatedFields });
+    }
+});
 exports.default = Post;
 //# sourceMappingURL=post.model.js.map

@@ -17,9 +17,7 @@ const poppins = Poppins({
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("conectadome en socket io");
-    });
+    socket.on("connect", () => {});
     socket.on("disconnect", () => {});
 
     return () => {

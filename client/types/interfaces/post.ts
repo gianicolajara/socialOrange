@@ -1,3 +1,4 @@
+import { OptionsButtonItemProps } from "../../components/OptionsButton/types";
 import { UserInterface } from "./user";
 
 export interface PostInterface {
@@ -13,6 +14,8 @@ export interface PostInterface {
   commentaries?: Array<any>;
   createdAt: string;
   updatedAt: string;
+  ownerPost?: boolean;
+  ownerOptions?: (id: string) => Array<OptionsButtonItemProps>;
 }
 
 export interface PostFormInterface {

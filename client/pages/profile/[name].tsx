@@ -3,13 +3,18 @@ import { ReactElement, useEffect } from "react";
 import { useSelector } from "react-redux";
 import GeneralLayout from "../../components/Layouts/GeneralLayout";
 import Loader from "../../components/Loader";
+import { OptionsButtonItemProps } from "../../components/OptionsButton/types";
 import ListPost from "../../components/Posts/ListPost";
 import ProfileUser from "../../components/ProfileUser";
 import Title from "../../components/Title";
 import Wrapper from "../../components/Wrapper";
+import { openModalAction } from "../../redux/slices/modal/modal.slice";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { getProfileByNameThunk } from "../../redux/thunks/profile.thunk";
-import { loadingStateProfile } from "../../types/enums/generalEnums";
+import {
+  loadingStateProfile,
+  modalsEnum,
+} from "../../types/enums/generalEnums";
 
 const Profile = () => {
   const router = useRouter();
@@ -17,6 +22,31 @@ const Profile = () => {
   const { loading, user } = useSelector(
     (state: RootState) => state.profileReducer
   );
+
+  const createOptionsItem = (id = ""): Array<OptionsButtonItemProps> => [
+    {
+      id: 1,
+      label: "Borrar",
+      onClick: () => {
+        dispatch(
+          openModalAction({ modalName: modalsEnum.deletepost, information: id })
+        );
+      },
+    },
+    {
+      id: 2,
+      label: "Editar",
+      onClick: () => {
+        dispatch(
+          openModalAction({ modalName: modalsEnum.updatepost, information: id })
+        );
+      },
+    },
+  ];
+
+  const getPermisionsOwnerPost = (id: string) => {
+    return user?.id === id;
+  };
 
   useEffect(() => {
     dispatch(getProfileByNameThunk(router.query.name as string));
@@ -47,7 +77,11 @@ const Profile = () => {
         )}
 
         <div className="flex flex-col items-center gap-3 my-5">
-          <ListPost posts={user?.posts || []} />
+          <ListPost
+            posts={user?.posts || []}
+            ownerOptions={createOptionsItem}
+            ownerPost={getPermisionsOwnerPost}
+          />
         </div>
       </Wrapper>
     </div>

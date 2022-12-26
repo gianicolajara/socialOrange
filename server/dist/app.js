@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.io = void 0;
 require("dotenv/config");
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
@@ -20,18 +21,12 @@ const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const images_routes_1 = __importDefault(require("./routes/images.routes"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const http_1 = require("http");
-const socket_io_1 = require("socket.io");
+const socket_util_1 = require("./utils/socket.util");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const server = (0, http_1.createServer)(app);
-const io = new socket_io_1.Server(server, {
-    cors: {
-        origin: "http://localhost:3000",
-        allowedHeaders: ["Access-Control-Allow-Origin"],
-        credentials: true,
-        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    },
-});
+const io = (0, socket_util_1.createSocket)(server);
+exports.io = io;
 app.set("trust proxy", 1);
 //connect db mongoose
 (0, connect_1.mongooseConnection)();
@@ -59,7 +54,11 @@ app.use(notFound_routes_1.default);
 app.use(handleErrors_1.handleErrors);
 io.on("connection", (socket) => {
     console.log("a user connected ", socket.id);
-    console.log(socket.rooms);
+    console.log("number of connections on connect action", io.engine.clientsCount);
+    socket.on("disconnect", (reason) => {
+        console.log("a user disconnected", reason);
+        console.log("number of connections on disconnect action", io.engine.clientsCount);
+    });
 });
 exports.default = server;
 //# sourceMappingURL=app.js.map
