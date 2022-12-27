@@ -16,39 +16,40 @@ import {
   likePost,
   updatePost,
 } from "../controllers/post.controller";
+import { verifyToken } from "../middlewares/verifyToken";
 
 const postRouter = Router();
 
 postRouter.get(
   "/",
-  [...getAllPostsValidtor, handleErrorsValidators],
+  [...getAllPostsValidtor, handleErrorsValidators, verifyToken],
   getAllPosts
 );
 postRouter.get(
   "/:id",
-  [...getOnePostValidator, handleErrorsValidators],
+  [...getOnePostValidator, handleErrorsValidators, verifyToken],
   getOnePost
 );
 postRouter.delete(
   "/:id",
-  [...deletePostValidator, handleErrorsValidators],
+  [...deletePostValidator, handleErrorsValidators, verifyToken],
   deletePost
 );
 postRouter.post(
   "/",
-  [...createPostValidator, handleErrorsValidators],
+  [...createPostValidator, handleErrorsValidators, verifyToken],
   createPost
 );
 
 postRouter.put(
   "/:id",
-  [...updatePostValidator, handleErrorsValidators],
+  [...updatePostValidator, handleErrorsValidators, verifyToken],
   updatePost
 );
 
 postRouter.put(
   "/like/:id",
-  [...likePostValidator, handleErrorsValidators],
+  [...likePostValidator, handleErrorsValidators, verifyToken],
   likePost
 );
 

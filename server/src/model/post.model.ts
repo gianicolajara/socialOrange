@@ -23,6 +23,15 @@ const postSchema = new Schema<PostInterface>(
     likes: {
       type: Number,
     },
+    ratings: {
+      type: [Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
+    },
+    likeByUser: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

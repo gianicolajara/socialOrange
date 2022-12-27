@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { AiFillLike } from "react-icons/ai";
+import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { useAppDispatch } from "../../redux/store";
 import { PostInterface } from "../../types/interfaces/post";
 import { getEstimatedTime } from "../../utils/times";
@@ -19,6 +19,7 @@ const PostItem = ({
   likes = 0,
   handleOnLike = () => {},
   loadingLike = false,
+  likeByUser = false,
 }: PostInterface) => {
   const dispatch = useAppDispatch();
 
@@ -56,7 +57,7 @@ const PostItem = ({
           <div className="flex justify-center items-center gap-3">
             <p>{likes}</p>
             <IconButton onClick={() => handleOnLike(id)} loading={loadingLike}>
-              <AiFillLike />
+              {likeByUser ? <AiFillDislike /> : <AiFillLike />}
             </IconButton>
             {ownerPost && <OptionsButton options={ownerOptions(id)} />}
           </div>

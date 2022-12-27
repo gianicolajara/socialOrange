@@ -16,10 +16,10 @@ export const userSchema = new Schema<UserInterface, UserModel>(
       type: [Schema.Types.ObjectId],
       ref: "Post",
     },
-    ratings: {
+    /*  ratings: {
       type: [Schema.Types.ObjectId],
       ref: "Post",
-    },
+    }, */
   },
   {
     timestamps: true,

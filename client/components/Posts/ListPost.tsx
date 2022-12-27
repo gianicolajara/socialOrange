@@ -46,6 +46,7 @@ const ListPost = ({
             createdAt,
             updatedAt,
             likes,
+            likeByUser,
           }) => (
             <PostItem
               key={id}
@@ -61,6 +62,7 @@ const ListPost = ({
               likes={likes}
               handleOnLike={handleOnLike}
               loadingLike={loadingLike}
+              likeByUser={likeByUser}
             />
           )
         )

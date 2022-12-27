@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { ImageInterface, PostInterface } from "interfaces";
+import { URL_IMAGES_FOLDER_PUBLIC } from "../config";
 import { Types } from "mongoose";
 import Image from "../model/image.model";
-import { URL_IMAGES_FOLDER_PUBLIC } from "../config";
 import Post from "../model/post.model";
 import User from "../model/user.model";
 import fs from "fs";
@@ -12,16 +12,42 @@ export const getAllPosts = (
   res: Response,
   next: NextFunction
 ) => {
-  Post.find({})
-    .populate(["creator", "photo"])
-    .exec((err: any, posts: Array<PostInterface>) => {
-      if (err) return next(err);
+  User.findById(req.session.user, {}, (err, userDoc) => {
+    if (err) return next(err);
 
-      return res.status(200).json({
-        message: "posts found",
-        posts,
-      });
-    });
+    Post.aggregate(
+      [
+        {
+          $addFields: {
+            likeByUser: {
+              $cond: [
+                {
+                  $in: [new Types.ObjectId(req.session.user), "$ratings"],
+                },
+                true,
+                false,
+              ],
+            },
+          },
+        },
+      ],
+      {},
+      (err, result) => {
+        if (err) return next(err);
+
+        const resultMangosta = result.map((item) => new Post(item).toJSON());
+
+        Post.populate(resultMangosta, { path: "creator photo" }, (err, doc) => {
+          if (err) return next(err);
+
+          return res.status(200).json({
+            message: "posts found",
+            posts: doc,
+          });
+        });
+      }
+    );
+  });
 };
 
 export const getOnePost = (req: Request, res: Response, next: NextFunction) => {
@@ -137,55 +163,53 @@ export const likePost = (req: Request, res: Response, next: NextFunction) => {
   //post/like -> method post
   const { id } = req.params;
 
-  User.findById(req.session.user)
+  Post.findById(id)
     .where("ratings")
-    .in([id])
-    .exec((errUser, docUser) => {
-      if (errUser) return next(errUser);
+    .in([req.session.user])
+    .exec((errPost, docPost) => {
+      if (errPost) return next(errPost);
 
-      if (docUser === null) {
-        User.findByIdAndUpdate(
-          req.session.user,
+      if (docPost === null) {
+        Post.findByIdAndUpdate(
+          id,
           {
             $push: {
-              ratings: new Types.ObjectId(id as string),
+              ratings: new Types.ObjectId(req.session.user),
+            },
+            $inc: {
+              likes: 1,
+            },
+            $set: {
+              likeByUser: true,
             },
           },
-          { new: true },
-          (errUserUpdatePush) => {
-            if (errUserUpdatePush) return next(errUserUpdatePush);
+          {},
+          (err, doc) => {
+            if (err) return next(err);
           }
         );
       } else {
-        User.findByIdAndUpdate(
-          req.session.user,
+        docPost.updateOne(
           {
             $pull: {
-              ratings: new Types.ObjectId(id as string),
+              ratings: new Types.ObjectId(req.session.user),
+            },
+            $inc: {
+              likes: -1,
+            },
+            $set: {
+              likeByUser: false,
             },
           },
-          { new: true },
-          (errUserUpdateDelete) => {
-            if (errUserUpdateDelete) return next(errUserUpdateDelete);
+          {},
+          (err, doc) => {
+            if (err) return next(err);
           }
         );
       }
 
-      Post.findByIdAndUpdate(
-        id,
-        {
-          $inc: {
-            likes: docUser ? -1 : 1,
-          },
-        },
-        { new: true },
-        (errUpdatePost) => {
-          if (errUpdatePost) return next(errUpdatePost);
-
-          return res.status(200).json({
-            message: "liked successfully",
-          });
-        }
-      );
+      return res.status(200).json({
+        message: "liked successfully",
+      });
     });
 };

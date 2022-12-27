@@ -19,6 +19,7 @@ export interface PostInterface {
   likes: number;
   handleOnLike: (id: string) => void;
   loadingLike: boolean;
+  likeByUser: boolean;
 }
 
 export interface PostFormInterface {
