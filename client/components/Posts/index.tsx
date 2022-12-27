@@ -20,7 +20,9 @@ import ListPost from "./ListPost";
 const Posts = () => {
   const dispatch = useAppDispatch();
 
-  const { posts } = useSelector((state: RootState) => state.postReducer);
+  const { posts, loading: loadingPost } = useSelector(
+    (state: RootState) => state.postReducer
+  );
   const { user, loading } = useSelector(
     (state: RootState) => state.userReducer
   );
@@ -86,7 +88,7 @@ const Posts = () => {
         ownerOptions={createOptionsItem}
         ownerPost={getPermisionsOwnerPost}
         handleOnLike={likeButtonPost}
-        loadingLike={loading === loadingStatePost.PENDING}
+        loadingLike={loadingPost === loadingStatePost.PENDING}
       />
     </section>
   );

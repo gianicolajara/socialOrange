@@ -10,8 +10,10 @@ import Title from "../../components/Title";
 import Wrapper from "../../components/Wrapper";
 import { openModalAction } from "../../redux/slices/modal/modal.slice";
 import { RootState, useAppDispatch } from "../../redux/store";
+import { likePostByIdThunk } from "../../redux/thunks/post.thunk";
 import { getProfileByNameThunk } from "../../redux/thunks/profile.thunk";
 import {
+  loadingStatePost,
   loadingStateProfile,
   modalsEnum,
 } from "../../types/enums/generalEnums";
@@ -21,6 +23,9 @@ const Profile = () => {
   const dispatch = useAppDispatch();
   const { loading, user } = useSelector(
     (state: RootState) => state.profileReducer
+  );
+  const { posts, loading: loadingPost } = useSelector(
+    (state: RootState) => state.postReducer
   );
 
   const createOptionsItem = (id = ""): Array<OptionsButtonItemProps> => [
@@ -46,6 +51,10 @@ const Profile = () => {
 
   const getPermisionsOwnerPost = (id: string) => {
     return user?.id === id;
+  };
+
+  const likeButtonPost = (id = "") => {
+    dispatch(likePostByIdThunk(id));
   };
 
   useEffect(() => {
@@ -81,6 +90,8 @@ const Profile = () => {
             posts={user?.posts || []}
             ownerOptions={createOptionsItem}
             ownerPost={getPermisionsOwnerPost}
+            handleOnLike={likeButtonPost}
+            loadingLike={loadingPost === loadingStatePost.PENDING}
           />
         </div>
       </Wrapper>
